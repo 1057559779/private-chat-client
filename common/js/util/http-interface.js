@@ -3,6 +3,7 @@
  * 基于 Promise 对象实现更简单的 request 使用方式，支持请求和响应拦截
  */
 import ToastUtil from "@/common/js/util/toast-util.js"
+import wsServer from "@/config/ws/index.js"
 import configInfo from "@/config/base/config-info.js"
 import store from "@/store/index.js"
 export default {
@@ -99,6 +100,8 @@ export default {
 						//error
 					case 401:
 						ToastUtil.show('请重新登录')
+						//无权限就401 触发手动关闭ws
+						wsServer.close()
 						store.commit('user/REMOVE_USER_INFO')
 						store.commit('user/REMOVE_TOKEN')
 						uni.reLaunch({

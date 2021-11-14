@@ -17,7 +17,7 @@
             }
         },
         "splashscreen" : {
-            "alwaysShowBeforeRender" : false,
+            "alwaysShowBeforeRender" : true,
             "waiting" : false,
             "autoclose" : false,
             "delay" : 0

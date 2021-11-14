@@ -40,6 +40,8 @@
 	import {mapMutations,mapGetters} from "vuex"
 	import configInfo from "@/config/base/config-info.js"
 	import CryptoJS from 'crypto-js';
+	import wsServer from "@/config/ws/index.js"
+	
 	export default {
 		data() {
 			return {
@@ -72,6 +74,8 @@
 					
 					this.setToken(res.access_token)
 					await this.getUserInfo()
+					//开启ws服务
+					wsServer.open()
 					uni.reLaunch({
 						url: "/pages/tabs/single/single"
 					})

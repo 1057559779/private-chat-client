@@ -42,8 +42,8 @@
 	import {mapMutations,mapGetters} from "vuex"
 	import MyCenterList from "@/pages/tabs/my-center/my-center-list.vue"
 	import MyCenterListItem from "@/pages/tabs/my-center/my-center-list-item.vue"
+	import wsServer from "@/config/ws/index.js"
 	
-	//import MyTabbar from "@/components/my-tabbar.vue"
 	export default {
 		components: {
 			//MyTabbar,
@@ -73,6 +73,8 @@
 				// 删除一些用户标识
 				this.removeUserInfo()
 				this.removeToken()
+				//退出当时候顺便关闭webscoket
+				wsServer.close()
 				uni.reLaunch({
 					url: "/pages/login/login"
 				})

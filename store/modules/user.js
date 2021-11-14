@@ -10,7 +10,7 @@ export default {
 		token: uni.getStorageSync("token"),
 	},
 	getters: {
-		//判断登录标识是否存在
+		//判断登录标识是否存在 存在返回true
 		isLoginFlagValid(state) {
 			
 			//缺一个都不行

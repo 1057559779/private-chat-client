@@ -1,6 +1,6 @@
 <script>
 	import {mapGetters} from "vuex"
-	import interceptorCollection from "@/config/interceptor"
+	import wsServer from "@/config/ws/index.js"
 	import messagePush from "@/config/push"
 	export default {
 		onLaunch: function() {
@@ -8,11 +8,12 @@
 			this.init();
 		},
 		onShow: function() {
+			
 		
-			console.log("show")
 		},
 		onHide: function() {
-			console.log('App Hide')
+			wsServer.close()
+		
 		},
 		computed: {
 			...mapGetters({
@@ -21,31 +22,29 @@
 			})
 		},
 		methods:{
-			//初始化 h5端 拦截器必须先行拦截一次，不然会出现诡异的漏拦截
 			init(){
-				// #ifdef H5
-					//true 代表已经过期 过期的要跳走
-					const flag = this.isLoginFlagValid
-					if(!flag){
-						uni.reLaunch({
-							url: "/pages/login/login"
-						})
-					}
-				// #endif
-			
-				//拦截函数
-				interceptorCollection();
-				// #ifdef APP-PLUS
-					//消息推送
-					//messagePush();
-				// #endif
+				//如果存在登录标识自动连接websocket 如果标识是过期当，自动401关闭 退回登录页面
+				if(this.isLoginFlagValid) {
+					//websocket 服务启动
+					wsServer.open()
+				}
+				
+				
 			}
 		},
 		watch: {
 			token(v) {
-				console.log(v)
+				//当token不存在当时候 手动关闭ws服务
+				if(!v) {
+					console.log(v)
+					wsServer.close()
+				}
 			}
-		}
+		},
+		mounted() {
+			console.log("hi")
+		},
+	
 	}
 </script>
 
