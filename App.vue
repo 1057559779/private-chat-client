@@ -41,9 +41,6 @@
 				}
 			}
 		},
-		mounted() {
-			console.log("hi")
-		},
 	
 	}
 </script>

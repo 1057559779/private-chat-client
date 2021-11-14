@@ -1,16 +1,16 @@
 import ToastUtil from "@/common/js/util/toast-util.js"
-
+import configInfo from "@/config/base/config-info.js"
 const wsServer = {
 	
 
 	//开启连接	
-	open() {
+	open() {		
 		uni.connectSocket({
-		    url: 'ws://127.0.0.1:9090/websocket/forGroup',
-		    success(res) {
-		    	ToastUtil.show("连接成功")
-				//调用关闭监听事件
-				wsServer.onClose()
+		    url: configInfo.wsUrl,
+		    complete(res) {
+		    	
+				wsServer.onOpen()
+				wsServer.onError()
 		    }
 		});
 	},
@@ -33,6 +33,18 @@ const wsServer = {
 	onClose(){
 		uni.onSocketClose( (res)=> {
 		  console.log('WebSocket 已关闭！');
+		});
+	},
+	onOpen() {
+		uni.onSocketOpen(function (res) {
+		  ToastUtil.show("连接成功")
+		  //调用关闭监听事件
+		  wsServer.onClose()
+		});
+	},
+	onError() {
+		uni.onSocketError(function (res) {
+			ToastUtil.show("WebSocket连接打开失败，请检查！")
 		});
 	}
 	

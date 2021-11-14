@@ -1,6 +1,4 @@
 
-
-
 /**
  * 一些基础信息的配置
  */
@@ -14,7 +12,8 @@ const configInfo = {
 		baseUrl: "/api",
 	//#endif
 	
-
+	//websocket的url
+	wsUrl: "ws://127.0.0.1:9090/websocket/forGroup",
 	
 	//http 请求不需要请求头的路径  一个是普通登录，一个是企业微信掌上长龙自动登录
 	anonymityUrl: [`/author/login`],
