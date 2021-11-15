@@ -1,12 +1,14 @@
 import ToastUtil from "@/common/js/util/toast-util.js"
 import configInfo from "@/config/base/config-info.js"
+import store from "@/store/index.js"
 const wsServer = {
 	
 
 	//开启连接	
 	open() {		
+		let token = store.getters['user/getToken']
 		uni.connectSocket({
-		    url: configInfo.wsUrl,
+		    url: `${configInfo.wsUrl}/${token}`,
 		    complete(res) {
 		    	
 				wsServer.onOpen()
@@ -17,7 +19,7 @@ const wsServer = {
 	//接受消息
 	receiveMessage(callback) {
 		uni.onSocketMessage((res)=>{
-			callback(res)
+			callback(res.data)
 		});
 	},
 	send(msg) {
@@ -32,7 +34,7 @@ const wsServer = {
 	//当关闭当时候
 	onClose(){
 		uni.onSocketClose( (res)=> {
-		  console.log('WebSocket 已关闭！');
+			//ToastUtil.show("WebSocket 已关闭!")
 		});
 	},
 	onOpen() {

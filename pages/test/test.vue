@@ -16,13 +16,12 @@
 		},
 		methods: {
 			sendMsg() {
+			
 				wsServer.send("firechildren")
 			}
 		},
 		onLoad() {
-			wsServer.receiveMessage((res)=>{
-				console.log(res)
-			})
+			
 		}
 	}
 </script>
