@@ -5,7 +5,7 @@ export default {
 	 * 账号密码登录接口
 	 */
 	async login(params) {
-		let url = '/author/login'
+		let url = '/authority/login'
 		return await http.post(url, params)
 	},
 	

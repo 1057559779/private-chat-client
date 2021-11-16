@@ -29,9 +29,9 @@ export default {
 		
 		let obj = {};
 
-		//如果当前登录接口存在匿名登录数组中，则不需要token
-		if (configInfo.anonymityUrl.indexOf(options.url) === -1) {
-			// 非登录接口增加token传参校验 start
+		//如果当前接口带有/res/路径 则添加token
+		if (options.url.indexOf(configInfo.authorityPrefix) > -1) {
+			// 非登录接口增加token传参校验
 			let token = store.getters['user/getToken']
 			obj['Authorization'] = "Bearer " + token
 		}
@@ -107,6 +107,9 @@ export default {
 						uni.reLaunch({
 							url: "/pages/login/login"
 						})
+						break;
+					case 404:
+						ToastUtil.show('接口路径不存在')
 						break;
 				}
 

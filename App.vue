@@ -1,7 +1,7 @@
 <script>
 	import ToastUtil from "@/common/js/util/toast-util.js"
 
-	import {mapGetters} from "vuex"
+	import {mapGetters,mapMutations} from "vuex"
 	import wsServer from "@/config/ws/index.js"
 	import messagePush from "@/config/push"
 	export default {
@@ -24,9 +24,18 @@
 			})
 		},
 		methods:{
+			...mapMutations({
+			    removeUserInfo(commit) {
+			      commit("user/REMOVE_USER_INFO")
+			    },
+				removeToken(commit) {
+			      commit("user/REMOVE_TOKEN")
+			    },
+			}),
 			init(){
 				//如果存在登录标识自动连接websocket 如果标识是过期当，自动401关闭 退回登录页面
 				if(this.isLoginFlagValid) {
+				
 					//websocket 服务启动
 					wsServer.open();
 					
@@ -34,8 +43,15 @@
 						let obj = JSON.parse(res)
 					
 						//说明是错误的
-						if(obj.type === 500) {
+						if(obj.type === 401) {
 							ToastUtil.show(obj.content)
+							// 删除一些用户标识
+							this.removeUserInfo()
+							this.removeToken()
+							
+							uni.reLaunch({
+								url: "/pages/login/login"
+							})
 						}
 					})
 				}
