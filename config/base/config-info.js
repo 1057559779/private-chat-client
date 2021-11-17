@@ -13,7 +13,7 @@ const configInfo = {
 	//#endif
 	
 	//websocket的url
-	wsUrl: "ws://192.168.137.97:9090/websocket/forGroup",
+	wsUrl: "ws://127.0.0.1:9090/websocket/forGroup",
 	
 	//需要token的接口前缀
 	authorityPrefix: "/res/",

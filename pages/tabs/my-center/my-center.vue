@@ -30,7 +30,7 @@
 					</MyCenterListItem>
 											  
 					<MyCenterListItem title="登出" 
-						@click="fackLogOut()"  icon="close" iconColor="#b4b4b4">
+						@click="logOut()"  icon="close" iconColor="#b4b4b4">
 					</MyCenterListItem>
 				</MyCenterList>
 			</view>
@@ -43,6 +43,7 @@
 	import MyCenterList from "@/pages/tabs/my-center/my-center-list.vue"
 	import MyCenterListItem from "@/pages/tabs/my-center/my-center-list-item.vue"
 	import wsServer from "@/config/ws/index.js"
+	import authApi from "@/api/login/auth.js"
 	
 	export default {
 		components: {
@@ -69,14 +70,17 @@
 			      commit("user/REMOVE_TOKEN")
 			    },
 			}),
-			fackLogOut(){
-				// 删除一些用户标识
-				this.removeUserInfo()
-				this.removeToken()
-				//退出当时候顺便关闭webscoket
-				wsServer.close()
-				uni.reLaunch({
-					url: "/pages/login/login"
+			logOut(){
+				//调用远程接口，删除token 如果在登出前token已经失效也会触发http拦截器中的401退出
+				authApi.logout(()=>{
+					// 删除一些用户标识
+					this.removeUserInfo()
+					this.removeToken()
+					//退出当时候顺便关闭webscoket
+					wsServer.close()
+					uni.reLaunch({
+						url: "/pages/login/login"
+					})
 				})
 			},
 			goPages(url) {

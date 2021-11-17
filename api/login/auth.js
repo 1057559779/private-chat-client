@@ -16,4 +16,13 @@ export default {
 		let url = '/res/user/getUserInfo'
 		return await http.get(url)
 	},
+	
+	
+	/**
+	 * 登出
+	 */
+	async logout() {
+		let url = '/res/token/logout'
+		return await http.get(url)
+	},
 }
