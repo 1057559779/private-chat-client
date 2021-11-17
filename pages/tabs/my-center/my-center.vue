@@ -42,7 +42,7 @@
 	import {mapMutations,mapGetters} from "vuex"
 	import MyCenterList from "@/pages/tabs/my-center/my-center-list.vue"
 	import MyCenterListItem from "@/pages/tabs/my-center/my-center-list-item.vue"
-	import wsServer from "@/config/ws/index.js"
+	import wsClient from "@/common/js/util/ws-client.js"
 	import authApi from "@/api/login/auth.js"
 	
 	export default {
@@ -77,7 +77,7 @@
 					this.removeUserInfo()
 					this.removeToken()
 					//退出当时候顺便关闭webscoket
-					wsServer.close()
+					wsClient.close()
 					uni.reLaunch({
 						url: "/pages/login/login"
 					})

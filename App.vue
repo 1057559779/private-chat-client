@@ -1,8 +1,7 @@
 <script>
 	import ToastUtil from "@/common/js/util/toast-util.js"
-
 	import {mapGetters,mapMutations} from "vuex"
-	import wsServer from "@/config/ws/index.js"
+	import wsClient from "@/common/js/util/ws-client.js"
 	import messagePush from "@/config/push"
 	export default {
 		onLaunch: function() {
@@ -14,7 +13,6 @@
 		
 		},
 		onHide: function() {
-			wsServer.close()
 		
 		},
 		computed: {
@@ -33,30 +31,24 @@
 			    },
 			}),
 			init(){
-				//如果存在登录标识自动连接websocket 如果标识是过期当，自动401关闭 退回登录页面
-				if(this.isLoginFlagValid) {
+				//websocket 客户端开始连接
+				wsClient.open();
 				
-					//websocket 服务启动
-					wsServer.open();
-					
-					wsServer.receiveMessage((res)=>{
-						let obj = JSON.parse(res)
-					
-						//说明是错误的
-						if(obj.type === 401) {
-							ToastUtil.show(obj.content)
-							// 删除一些用户标识
-							this.removeUserInfo()
-							this.removeToken()
-							
-							uni.reLaunch({
-								url: "/pages/login/login"
-							})
-						}
-					})
-				}
+				wsClient.receiveMessage((res)=>{
+					let obj = JSON.parse(res)
 				
-				
+					//说明是无权限到
+					if(obj.type === 401) {
+						ToastUtil.show(obj.content)
+						// 删除一些用户标识
+						this.removeUserInfo()
+						this.removeToken()
+						
+						uni.reLaunch({
+							url: "/pages/login/login"
+						})
+					}
+				})
 			}
 		},
 		watch: {
@@ -64,7 +56,7 @@
 				//当token不存在当时候 手动关闭ws服务
 				if(!v) {
 					console.log(v)
-					wsServer.close()
+					wsClient.close()
 				}
 			}
 		},
