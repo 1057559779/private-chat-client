@@ -1,34 +1,23 @@
 <!-- 登录页 主色调背景采用css 色调上的图案背景采用 标签绝对定位 -->
 <template>
 	<view class="page-login">
-		<image class="login-bk" mode="widthFix" src="/static/login/login-bk02.png" ></image>
 		<view class="login-content">
-			<view class="logo-area">
-				<image src="/static/login/loongair.png" class="image-box"></image>
-			</view>
+			
 			<view class="page-title">
-				<view class="title">智慧运行平台</view>
-				<view class="version">V1.0</view>
+				<view class="title">Qiu的聊天</view>
 			</view>
 			<view class="input-area">
 				<view class="form-item">
-					<view class="form-head">
-						<text class="title">账号</text>
-						<text class="warning"></text>
-					</view>
-					<input class="login-input" v-model="form.userName" placeholder-style="color:rgba(255,255,255,0.37)" placeholder="请输入账号" />
+					<input class="login-input" v-model="form.userName" placeholder-style="color:#aaa" placeholder="请输入账号" />
 				</view>
 				<view class="form-item">
-					<view class="form-head">
-						<text class="title">密码</text>
-						<text class="warning"></text>
-					</view>
-					<input type="password" class="login-input" v-model="form.password" placeholder-style="color:rgba(255,255,255,0.37)" placeholder="请输入密码" />
+					<input type="password" class="login-input" v-model="form.password" placeholder-style="color:#aaa" placeholder="请输入密码" />
 				</view>
 				
-				<view class="hint">请使用OA账号登录系统</view>
 				<view class="btn-area">
-					<view class="login-btn" @click="login">登录</view>
+					<view class="login-btn" @click="login">
+						<u-icon name="arrow-right" color="#ffffff" size="75"></u-icon>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -120,70 +109,44 @@
 		position: relative;
 		z-index: 20;
 		height: 100vh;
-		background-image: url(/static/login/login-bk01.jpg);
-		.login-bk {
-			position: absolute;
-			width: 100%;
-			bottom: 0;
-			opacity: 0.7;
-			//background-image: url(/static/login/login-bk02.png);
-		}
+	
 		.login-content {
 			position: relative;
 			z-index: 30;
-			padding: 200rpx 57rpx;
-			.logo-area {
-				color: #ffffff;
-				font-weight: bold;
-				width: 185rpx;
-				height: 85rpx;
-				.image-box {
-					width: 185rpx;
-					height: 85rpx;
-				}
-			}
+			padding: 330rpx 80rpx 0;
+		
 			.page-title {
-				display: flex;
 				font-size: 44rpx;
 				font-weight: bold;
-				color: #ffffff;
-				.title {
-					margin-right: 35rpx;
-				}
+				color: $global-primary;
+				text-align: center;	
 			}
 			.input-area {
-				margin-top: 150rpx;
+				margin-top: 70rpx;
 				.form-item {
-					padding-bottom: 20rpx;
-					border-bottom: 1px solid #5fc2fe;
+					background-color: #d8e0e6;
+					border-radius: 50rpx;
+					padding: 30rpx 0;
+					text-align: center;
+					//border-bottom: 1px solid $global-minor;
 					margin-bottom: 20rpx;
-					.form-head {
-						.title {
-							color: #ffffff;
-						}
-						.warning {
-							margin-left: 15rpx;
-							color: red;
-						}	
-					}
 					.login-input {
-						color: #ffffff;
+						color: $global-primary;
 					}
 				}
-				.hint {
-					margin:20rpx 0;
-					color: #b2c7ef;
-				}
+			
 				.btn-area {
+	
 					.login-btn {
+						margin: 50rpx auto;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						width: 130rpx;
+						height: 130rpx;
 						font-weight: bold;
-						font-size: 32rpx;
-						color: #ffffff;
-						padding: 17rpx 0;
-						background-color: #1578ff;
-						margin: 52rpx 0;
-						text-align: center;
-						border-radius: 10rpx;
+						background-color: $global-primary;
+						border-radius: 50%;
 					}
 				}
 			}
