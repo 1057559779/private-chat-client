@@ -38,7 +38,7 @@
 					let obj = JSON.parse(res)
 				
 					//说明是无权限到
-					if(obj.type === 401) {
+					if(obj.statusCode === 401) {
 						ToastUtil.show(obj.content)
 						// 删除一些用户标识
 						this.removeUserInfo()

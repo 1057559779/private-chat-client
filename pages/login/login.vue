@@ -30,6 +30,7 @@
 	import configInfo from "@/config/base/config-info.js"
 	import CryptoJS from 'crypto-js';
 	import wsClient from "@/common/js/util/ws-client.js"
+	import ToastUtil from "@/common/js/util/toast-util.js"
 	
 	export default {
 		data() {
@@ -51,6 +52,7 @@
 			}),
 			//请求登录接口
 			async login(){
+				ToastUtil.showLoading("正在登录")
 				//this.encrypt(this.form.userName, this.form.password)
 				let obj = {
 					username : this.form.userName,
@@ -58,16 +60,16 @@
 				}
 				//登录 获取token
 				let res = await loginApi.login(obj)
-				
 				if (res.access_token) {
-					
 					this.setToken(res.access_token)
 					await this.getUserInfo()
 					//开启ws服务
 					wsClient.open()
+					ToastUtil.hideLoading()
 					uni.reLaunch({
 						url: "/pages/tabs/single/single"
 					})
+					
 				} else {
 					this.commonError('登录失败')
 				}
@@ -78,6 +80,7 @@
 				this.setUserInfo(res)
 			},
 			commonError(msg) {
+				ToastUtil.hideLoading()
 				uni.showToast({
 					title: msg??"未知错误",
 					icon: 'none'

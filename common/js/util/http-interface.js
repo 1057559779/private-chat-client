@@ -8,7 +8,7 @@ import configInfo from "@/config/base/config-info.js"
 import store from "@/store/index.js"
 export default {
 	config: {
-
+		timeout: 5000,
 		baseUrl: configInfo.baseUrl,
 		header: {
 			'Content-Type': 'application/json',
@@ -40,9 +40,10 @@ export default {
 		options.responseType = options.responseType || this.config.responseType
 		options.url = this.config.baseUrl + options.url
 		options.data = options.data || {}
+		options.timeout = options.timeout || this.config.timeout
 		options.method = options.method || this.config.method
 		options.header = Object.assign({}, options.header, obj)
-
+		
 	
 		// 非登录接口增加token传参校验 end
 		return new Promise((resolve, reject) => {
@@ -101,6 +102,7 @@ export default {
 					case 401:
 						console.log(options.url)
 						ToastUtil.show('请重新登录')
+						ToastUtil.hideLoading()
 						//无权限就401 触发手动关闭ws
 						wsClient.close()
 						store.commit('user/REMOVE_USER_INFO')
