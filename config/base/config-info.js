@@ -13,7 +13,7 @@ const configInfo = {
 	//#endif
 	
 	//websocket的url
-	wsUrl: "ws://127.0.0.1:9090/ws/chat",
+	wsUrl: "ws://127.0.0.1:9090/chat",
 	
 	//需要token的接口前缀
 	authorityPrefix: "/res/",
