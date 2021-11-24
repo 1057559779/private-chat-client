@@ -20,9 +20,11 @@
 								</view>
 								<view class="item-bottom">
 									<view class="message">
-										{{item.message}}
+										{{item.message}}{{item.message}}{{item.message}}
 									</view>
-									<view class="no-read"></view>
+									<view class="no-read">
+										{{item.noRead>99?"99+":item.noRead}}
+									</view>
 								</view>
 							</view>
 						</view>
@@ -123,7 +125,16 @@
 							white-space: nowrap;
 						}
 						.no-read {
-							
+							/* #ifndef APP-NVUE */
+							display: inline-flex;
+							/* #endif */
+							justify-content: center;
+							color: #ffffff;
+							align-items: center;
+							line-height: 24rpx;
+							padding: 2rpx 4rpx;
+							border-radius: 100rpx;
+							background-color: #f56c6c;
 						}
 					}
 				}
