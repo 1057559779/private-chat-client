@@ -105,6 +105,9 @@
 			.item {
 				display: flex;
 				padding: 20rpx;
+				&:active {
+					background-color: #dee2e2;
+				}
 				.title-wrap {
 					width: 100%;
 					.item-top {
@@ -125,13 +128,10 @@
 							white-space: nowrap;
 						}
 						.no-read {
-							/* #ifndef APP-NVUE */
-							display: inline-flex;
-							/* #endif */
+							font-size: 22rpx;
 							justify-content: center;
 							color: #ffffff;
 							align-items: center;
-							line-height: 24rpx;
 							padding: 2rpx 4rpx;
 							border-radius: 100rpx;
 							background-color: #f56c6c;

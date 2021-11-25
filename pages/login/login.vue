@@ -53,6 +53,7 @@
 			//请求登录接口
 			async login(){
 				ToastUtil.showLoading("正在登录")
+			
 				//this.encrypt(this.form.userName, this.form.password)
 				let obj = {
 					username : this.form.userName,
