@@ -8,26 +8,9 @@
 					<u-swipe-action :show="item.show" :index="index" 
 						v-for="(item, index) in latelyList" :key="item.id" 
 						@click="click" @open="open"
-						:options="options"
-					>
-						<view class="item">
-							<u-avatar :size="100" class="item-avatar" :src="item.targetUserInfo.avatar" mode="square"></u-avatar>
-							<!-- 此层wrap在此为必写的，否则可能会出现标题定位错误 -->
-							<view class="title-wrap">
-								<view class="item-top">
-									<text class="nick-name">{{ item.targetUserInfo.showName }}</text>
-									<text class="last-time">{{ new Date(item.updateTime).format("MM/dd") }}</text>
-								</view>
-								<view class="item-bottom">
-									<view class="message">
-										{{item.message}}
-									</view>
-									<view class="no-read">
-										{{item.noRead>99?"99+":item.noRead}}
-									</view>
-								</view>
-							</view>
-						</view>
+						:options="options">
+						<UserItem @click="openChatRoom(item)" :item="item" v-if="item.type === 1"></UserItem>
+						<GroupItem @click="openChatRoom(item)" :item="item" v-if="item.type === 2"></GroupItem>
 					</u-swipe-action>
 			</view>
 		</scroll-view>
@@ -38,10 +21,14 @@
 	//封装页面	
 	import IndexTopBar from "@/pages/tabs/index/index-topbar.vue";
 	import {mapGetters} from "vuex";
-	import latelyApi from "@/api/chat/lately.js"
+	import latelyApi from "@/api/chat/lately.js";
+	import UserItem from "./user-item.vue"
+	import GroupItem from "./group-item.vue"
 	export default {
 		components: {
 			IndexTopBar,
+			UserItem,
+			GroupItem
 		},
 		computed: {
 			...mapGetters({
@@ -82,6 +69,21 @@
 				this.latelyList.map((val, idx) => {
 					if(index != idx) this.latelyList[idx].show = false;
 				})
+			},
+			//打开聊天室
+			openChatRoom(item) {
+				let targetId = item.targetId;
+				let type = item.type
+				if(type === 1) {
+					uni.navigateTo({
+						url: `/pages/chat-room/single-room?target_id=${targetId}`
+					})
+				}else if(type === 2) {
+					uni.navigateTo({
+						url: `/pages/chat-room/group-room?target_id=${targetId}`
+					})
+				}
+				
 			}
 		},
 		mounted() {
@@ -102,55 +104,6 @@
 		}
 	}
 	.lately-list {
-			.item {
-				display: flex;
-				padding: 20rpx;
-				&:active {
-					background-color: #dee2e2;
-				}
-				.title-wrap {
-					width: 100%;
-					.item-top {
-						display: flex;
-						justify-content: space-between;
-						.nick-name {
-							font-size: 32rpx;
-						}
-					}
-					.item-bottom {
-						margin-top: 10rpx;
-						display: flex;
-						justify-content: space-between;
-						.message {
-							width: 550rpx;
-							overflow: hidden;
-							text-overflow: ellipsis;
-							white-space: nowrap;
-						}
-						.no-read {
-							display: flex;
-							height: 32rpx;
-							min-width: 32rpx;
-							font-size: 22rpx;
-							font-weight: bold;
-							justify-content: center;
-							color: #ffffff;
-							align-items: center;
-							padding: 2rpx 4rpx;
-							border-radius: 100rpx;
-							background-color: #f56c6c;
-						}
-					}
-				}
-			}
-			
-			.item-avatar {
-				width: 100rpx;
-				flex: 0 0 120rpx;
-				height: 120rpx;
-				margin-right: 20rpx;
-				border-radius: 12rpx;
-			}
 			
 			.title {
 				text-align: left;

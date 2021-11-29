@@ -59,6 +59,26 @@
             }
             
         }
+        ,{
+            "path" : "pages/chat-room/single-room",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"app-plus":{
+					"titleNView": false
+				}
+            }  
+        }
+        ,{
+            "path" : "pages/chat-room/group-room",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
