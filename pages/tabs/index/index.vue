@@ -20,7 +20,7 @@
 								</view>
 								<view class="item-bottom">
 									<view class="message">
-										{{item.message}}{{item.message}}{{item.message}}
+										{{item.message}}
 									</view>
 									<view class="no-read">
 										{{item.noRead>99?"99+":item.noRead}}
@@ -128,7 +128,11 @@
 							white-space: nowrap;
 						}
 						.no-read {
+							display: flex;
+							height: 32rpx;
+							min-width: 32rpx;
 							font-size: 22rpx;
+							font-weight: bold;
 							justify-content: center;
 							color: #ffffff;
 							align-items: center;
