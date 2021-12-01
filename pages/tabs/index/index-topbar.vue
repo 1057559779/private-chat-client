@@ -18,12 +18,10 @@
 </template>
 
 <script>
-	import MySearch from "@/components/my-search.vue"
 	import MyTopBar from "@/components/my-topbar.vue"
 	export default {
 		components: {
 			MyTopBar,
-			MySearch
 		},
 		data() {
 			return {
@@ -31,11 +29,7 @@
 			}
 		},
 		methods: {
-			runSearchPage() {
-				uni.navigateTo({
-					url: "/pages/search-page/search-page"
-				})
-			}
+			
 		}
 		
 	}

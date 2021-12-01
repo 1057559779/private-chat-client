@@ -13,9 +13,7 @@
 					"titleNView": false,
 					"bounce":"none"
 				}
-				
 			}
-			
 		},
 		{
             "path" : "pages/login/login",

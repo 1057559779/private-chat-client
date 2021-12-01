@@ -56,7 +56,7 @@
 
 <style scoped lang="scss">
 	.single-page {
-		//普通的手机 没有底部安全区
+		//普通的手机 没有底部安全区 100为tabbar
 		height: calc(100vh - 100rpx);
 		
 		//下述两个height 都是对应于具有 底部安全局的
