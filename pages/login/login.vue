@@ -1,6 +1,6 @@
 <!-- 登录页 主色调背景采用css 色调上的图案背景采用 标签绝对定位 -->
 <template>
-	<view class="page-login">
+	<view class="page-login" @touchmove.stop.prevent>
 		<view class="login-content">
 			
 			<view class="page-title">
