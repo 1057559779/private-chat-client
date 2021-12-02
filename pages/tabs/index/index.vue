@@ -72,15 +72,22 @@
 			},
 			//打开聊天室
 			openChatRoom(item) {
-				let targetId = item.targetId;
+				
 				let type = item.type
+				//类型1 点对点
 				if(type === 1) {
+					//为了节省传输大小，selfComment不传递过去了
+					delete item.targetUserInfo['selfComment']
+					let targetInfo = JSON.stringify(item.targetUserInfo)
 					uni.navigateTo({
-						url: `/pages/chat-room/single-room?target_id=${targetId}`
+						url: `/pages/chat-room/single-room?target_info=${targetInfo}`
 					})
-				}else if(type === 2) {
+				}
+				//类型2 多对多
+				else if(type === 2) {
+					let targetInfo = JSON.stringify(item.targetGroupInfo)
 					uni.navigateTo({
-						url: `/pages/chat-room/group-room?target_id=${targetId}`
+						url: `/pages/chat-room/group-room?target_info=${targetInfo}`
 					})
 				}
 				

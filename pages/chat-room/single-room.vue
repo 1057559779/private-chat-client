@@ -10,7 +10,7 @@
 		<!-- 当软键盘上升的时候 取消安全域 -->
 		<view class="chat-box" :class="{'safe':!height}" :style="{'transform': `translateY(-${height}px)`}">
 			<scroll-view :scroll-y="true" class="message-box">
-				<view>hi2</view>
+				<view>{{targetInfo}}</view>
 				<view>hi</view>
 				<view>hi</view>
 				<view>hi</view>
@@ -87,7 +87,7 @@
 		},
 		data() {
 			return {
-				targetId: null, //聊天室目标对象
+				targetInfo: null, //聊天室目标对象
 				height: 0,
 			}
 		},
@@ -97,8 +97,8 @@
 			})
 		},
 		onLoad(param) {
-			let targetId = param.target_id
-			this.targetId = targetId
+			let targetInfo = param.target_info
+			this.targetInfo = targetInfo
 			uni.onKeyboardHeightChange(res =>{
 			    //获取键盘高度
 				this.height = res.height
