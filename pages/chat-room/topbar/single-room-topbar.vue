@@ -55,6 +55,9 @@
 			font-size: 48rpx;
 			color: $global-primary;
 		}
+		.center {
+			font-size: 32rpx;
+		}
 		.action {
 			font-size: 48rpx;
 			color: $global-primary;

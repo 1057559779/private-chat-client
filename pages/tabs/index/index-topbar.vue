@@ -54,9 +54,10 @@
 			color: $global-primary;
 		}
 		.center {
-			flex: 1;
-			padding: 0 20rpx;
+			//flex: 1;
+			//padding: 0 20rpx;
 			text-align: center;
+			font-size: 32rpx;
 		}
 	}
 </style>

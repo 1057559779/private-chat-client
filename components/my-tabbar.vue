@@ -65,6 +65,7 @@
 				display: flex;
 				justify-content: space-between;
 				.tabbar-item {
+					padding-top: 18rpx;
 					display: flex;
 					flex: 1;
 					flex-direction: column;
