@@ -69,6 +69,6 @@
 	/*每个页面公共css */
 	@import "uview-ui/index.scss";
 	page {
-		background-color: #f7f7f8;
+		background-color: #ffffff;
 	}
 </style>

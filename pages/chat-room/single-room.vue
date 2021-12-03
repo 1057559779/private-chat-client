@@ -6,7 +6,7 @@
 		adjust-position=false 输入框设置这个属性，在触发焦点的时候不上移窗体，因为这种方式上移窗体会导致topbar也上移
 	 -->
 	<view class="single-room-page" @touchmove.stop.prevent>
-		<SingleRoomTopbar></SingleRoomTopbar>
+		<SingleRoomTopbar :target-info="targetInfo"></SingleRoomTopbar>
 		<!-- 
 			当软键盘上升的时候 取消安全域 
 		-->
@@ -20,11 +20,11 @@
 				@scroll="scroll"
 				class="message-box">
 				<view id="message-list">
-					<view class="message-item">{{targetInfo}}</view>
 					<view class="message-item">hi</view>
 					<view class="message-item">hi</view>
 					<view class="message-item">hi</view>
-					<view class="message-item"></view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hihih</view>
 					<view class="message-item">hi</view>
 					<view class="message-item">hi</view>
 					<view class="message-item">hi</view>
@@ -128,8 +128,9 @@
 				</view>
 				
 			</scroll-view>
-			<view class="input-box">
-				<textarea placeholder="请输入" @focus="rearchDown" :adjust-position="false" auto-height />
+			<view class="bottom-box">
+				<textarea placeholder="请输入" class="input-box"
+				@focus="rearchDown" :adjust-position="false" auto-height />
 			</view>
 		</view>
 	</view>
@@ -167,7 +168,7 @@
 		},
 		onLoad(param) {
 			let targetInfo = param.target_info
-			this.targetInfo = targetInfo
+			this.targetInfo = JSON.parse(targetInfo)
 			//键盘高度监控
 			uni.onKeyboardHeightChange(res =>{
 			    //获取键盘高度
@@ -204,18 +205,27 @@
 		justify-content: space-between;
 		transition: height .2s;
 		&.safe {
+			background-color: $global-general;
 			//底部安全局 padding
 			padding-bottom: constant(safe-area-inset-bottom);
 			padding-bottom: env(safe-area-inset-bottom);
 		}
 		.message-box {
 			min-height: 0;
-			background-color: #DCDFE6;
+			background-color: #ffffff;
 			flex: 1;
 		}
-		.input-box {
-			background-color: #F1F1F1;
-				
+		.bottom-box {
+			padding: 15rpx;
+			box-sizing: border-box;
+			background-color: $global-general;
+			.input-box {
+				width: 100%;
+				box-sizing: border-box;
+				background-color: #ffffff;
+				padding: 18rpx;
+				border-radius: 32rpx;
+			}	
 		}
 	}
 </style>

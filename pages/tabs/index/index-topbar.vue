@@ -3,14 +3,14 @@
 	<view>
 		<MyTopBar>
 			<view class="index-topbar">
-				<view class="avatar"></view>
+				<u-avatar :size="55" class="avatar"
+				 :src="userInfo.avatar?userInfo.avatar:''"></u-avatar>
 				
 				<view class="center">
-					首页
+					{{userInfo.showName}}
 				</view>
 				<view class="right">
-					<!-- 空标签占位 -->
-					<view class="just-empty"></view>
+					<u-icon name="plus"></u-icon>
 				</view>
 			</view>
 		</MyTopBar>
@@ -18,7 +18,9 @@
 </template>
 
 <script>
-	import MyTopBar from "@/components/my-topbar.vue"
+	import MyTopBar from "@/components/my-topbar.vue";
+	import {mapGetters} from "vuex";
+	
 	export default {
 		components: {
 			MyTopBar,
@@ -27,6 +29,11 @@
 			return {
 				
 			}
+		},
+		computed: {
+			...mapGetters({
+				userInfo: "user/getUserInfo"
+			})	
 		},
 		methods: {
 			
@@ -42,24 +49,14 @@
 		align-items: center;
 		padding: 0 35rpx;
 		height: 100%;
-		background-color: #ffffff;
-		vertical-align: middle;
 		.right {
-			.just-empty {
-				width: 55rpx;
-				height: 55rpx;
-			}
+			font-size: 48rpx;
+			color: $global-primary;
 		}
 		.center {
 			flex: 1;
 			padding: 0 20rpx;
 			text-align: center;
-		}
-		.avatar {
-			width: 55rpx;
-			height: 55rpx;
-			border-radius: 100%;
-			background-color: #60baff;
 		}
 	}
 </style>

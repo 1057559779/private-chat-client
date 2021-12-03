@@ -49,8 +49,8 @@
 		height: calc(100rpx + constant(safe-area-inset-bottom));
 		height: calc(100rpx + env(safe-area-inset-bottom));	
 		.custom-tabbar-fixed {
-			box-shadow:4px 4px 8px #60baff;
-			background-color: #ffffff;
+			//box-shadow:4px 4px 8px #999999;
+			background-color: $global-general;
 			width: 100%;
 			position: fixed;
 			bottom: 0;
