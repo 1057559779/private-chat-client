@@ -15,115 +15,121 @@
 			:style="{'height': elasticHeight}">
 			<scroll-view 
 				:scroll-with-animation="true"
-				:scroll-y="true" class="message-box">
-				<view class="message-item">{{targetInfo}}</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item"></view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">hi</view>
-				<view class="message-item">bottom</view>
+				:scroll-y="true"
+				:scroll-top="scrollTop"
+				@scroll="scroll"
+				class="message-box">
+				<view id="message-list">
+					<view class="message-item">{{targetInfo}}</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item"></view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">hi</view>
+					<view class="message-item">bottom</view>
+					<view class="message-item">bottom</view>
+					<view class="message-item">bottom</view>
+				</view>
+				
 			</scroll-view>
 			<view class="input-box">
-				<textarea placeholder="请输入" :adjust-position="false" auto-height />
+				<textarea placeholder="请输入" @focus="rearchDown" :adjust-position="false" auto-height />
 			</view>
 		</view>
 	</view>
@@ -141,6 +147,9 @@
 				targetInfo: null, //聊天室目标对象
 				height: 0,
 				scrollTop: 0,
+				old: {
+					scrollTop: 0
+				}
 			}
 		},
 		computed: {
@@ -164,9 +173,24 @@
 			    //获取键盘高度
 				this.height = res.height
 			})
+	
 		},
 		methods: {
-			
+			scroll(e) {
+			    this.old.scrollTop = e.detail.scrollTop
+			},
+			rearchDown() {
+				setTimeout(()=>{
+					this.scrollTop = this.old.scrollTop
+					this.$nextTick(function(){
+						 
+						let info = uni.createSelectorQuery().select("#message-list");
+						　　　  　info.boundingClientRect((data) => { //data - 各种参数
+						　　　  　this.scrollTop = data.height
+						}).exec()
+					})
+				},300)
+			}
 		}
 	}
 </script>
