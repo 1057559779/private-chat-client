@@ -3,26 +3,23 @@
 		<view>
 			<IndexTopBar></IndexTopBar>
 		</view>
-		<MyPullRefresh @refresh="isOk">
-			<scroll-view :scroll-y="true" @scrolltolower="reachBottom" class="index-box">
-				<view class="lately-list">
-						<u-swipe-action :show="item.show" :index="index" 
-							v-for="(item, index) in latelyList" :key="item.id" 
-							@click="click" @open="open"
-							:options="options">
-							<UserItem @click="openChatRoom(item)" :item="item" v-if="item.type === 1"></UserItem>
-							<GroupItem @click="openChatRoom(item)" :item="item" v-if="item.type === 2"></GroupItem>
-						</u-swipe-action>
-				</view>
-			</scroll-view>
-		</MyPullRefresh>
+		<scroll-view :scroll-y="true" @scrolltolower="reachBottom" class="index-box">
+			<view class="lately-list">
+					<u-swipe-action :show="item.show" :index="index" 
+						v-for="(item, index) in latelyList" :key="item.id" 
+						@click="click" @open="open"
+						:options="options">
+						<UserItem @click="openChatRoom(item)" :item="item" v-if="item.type === 1"></UserItem>
+						<GroupItem @click="openChatRoom(item)" :item="item" v-if="item.type === 2"></GroupItem>
+					</u-swipe-action>
+			</view>
+		</scroll-view>
 	</view>
 </template>
 
 <script>
 	//封装页面	
 	import IndexTopBar from "@/pages/tabs/index/index-topbar.vue";
-	import MyPullRefresh from "@/components/my-pull-refresh.vue";
 	import {mapGetters} from "vuex";
 	import latelyApi from "@/api/chat/lately.js";
 	import UserItem from "./user-item.vue"
@@ -32,7 +29,6 @@
 			IndexTopBar,
 			UserItem,
 			GroupItem,
-			MyPullRefresh
 		},
 		computed: {
 			...mapGetters({
@@ -62,6 +58,7 @@
 				res.forEach(e => e.show = false)
 				this.latelyList = res
 			},
+			//并不是item的点击，而是action
 			click(row, action) {
 				console.log(action)
 			},
@@ -73,11 +70,6 @@
 				this.latelyList.map((val, idx) => {
 					if(index != idx) this.latelyList[idx].show = false;
 				})
-			},
-			async isOk(call) {
-				await this.getLatelyList()
-				//call 一下，释放下拉加载
-				call()
 			},
 			//打开聊天室
 			openChatRoom(item) {
