@@ -20,8 +20,18 @@
 				@scroll="scroll"
 				class="message-box">
 				<!-- 必须要有 message-list这个class 因为我是用这个class来计算scroll-view的高度的-->
-				<view id="message-list">
-					his
+				<view id="messageList" class="message-list">
+					<view class="message-item" :class="{'left':item.senderId !== userInfo.id }" v-for="(item,index) in messageList" :key="index">
+						<view class="avatar">
+							<u-avatar :size="55" class="avatar"
+							 :src="targetInfo.avatar?targetInfo.avatar:''"></u-avatar>
+						</view>
+						<view class="message"  :class="{'left':item.senderId !== userInfo.id }">
+							<view class="content" :class="{'left':item.senderId !== userInfo.id }">
+								{{item.message}}
+							</view>					
+						</view>
+					</view>
 				</view>
 				
 			</scroll-view>
@@ -48,7 +58,8 @@
 				scrollTop: 0,
 				old: {
 					scrollTop: 0
-				}
+				},
+				messageList: []
 			}
 		},
 		computed: {
@@ -62,7 +73,7 @@
 				//当软键盘升起当时候，高度适当缩小
 				let height = `calc(100vh - 85rpx - ${this.height}px  - var(--status-bar-height))`
 				return height;
-			}
+			},
 		},
 		async onLoad(param) {
 			let targetInfo = param.target_info
@@ -85,20 +96,21 @@
 					this.scrollTop = this.old.scrollTop
 					this.$nextTick(function(){
 						 
-						let info = uni.createSelectorQuery().select("#message-list");
+						let info = uni.createSelectorQuery().select("#messageList");
 						　　　  　info.boundingClientRect((data) => { //data - 各种参数
 						　　　  　this.scrollTop = data.height
 						}).exec()
 					})
 				},300)
 			},
+			//获得消息列表
 			async getMessageList() {
 				//获得目标人的id
 				let param = {
 					targetId: this.targetInfo.id
 				}
 				const res = await messageApi.getSingleMessage(param)
-				console.log(res)
+				this.messageList = res
 			}
 		}
 	}
@@ -120,8 +132,45 @@
 		}
 		.message-box {
 			min-height: 0;
-			background-color: #ffffff;
+			background-color: $global-general;
 			flex: 1;
+			.message-list {
+				padding: 0 20rpx;
+				.message-item {
+					display: flex;
+					align-items: center;
+					margin-top: 20rpx;
+					flex-direction: row-reverse;
+					&.left {
+						flex-direction: row;
+					}	
+					.avatar {
+						width: 55rpx;
+						height: 55rpx;
+					}
+					.message {
+						padding-left: 55rpx ;
+						&.left {
+							padding-left: 0;
+							padding-right: 55rpx;
+						}
+						.content {
+							background-color: #ffffff;
+							background-color: $global-primary;
+							color: #ffffff;
+							padding: 18rpx;
+							border-radius: 15rpx;
+							margin-right: 10rpx;
+							&.left {
+								color: #000000;
+								background-color: #ffffff;
+								margin-right: 0;
+								margin-left: 10rpx;
+							}
+						}
+					}			
+				}
+			}
 		}
 		.bottom-box {
 			padding: 15rpx;
