@@ -24,7 +24,7 @@
 					<view class="message-item" :class="{'left':item.senderId !== userInfo.id }" v-for="(item,index) in messageList" :key="index">
 						<view class="avatar">
 							<u-avatar :size="55" class="avatar"
-							 :src="targetInfo.avatar?targetInfo.avatar:''"></u-avatar>
+							 :src="item.senderId !== userInfo.id?targetInfo.avatar:userInfo.avatar"></u-avatar>
 						</view>
 						<view class="message"  :class="{'left':item.senderId !== userInfo.id }">
 							<view class="content" :class="{'left':item.senderId !== userInfo.id }">

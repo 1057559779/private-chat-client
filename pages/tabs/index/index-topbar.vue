@@ -4,7 +4,7 @@
 		<MyTopBar>
 			<view class="index-topbar">
 				<u-avatar :size="55" class="avatar"
-				 :src="userInfo.avatar?userInfo.avatar:''"></u-avatar>
+				 :src="userInfo.avatar"></u-avatar>
 				
 				<view class="center">
 					{{userInfo.showName}}
