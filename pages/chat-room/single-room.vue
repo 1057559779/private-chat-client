@@ -36,8 +36,11 @@
 				
 			</scroll-view>
 			<view class="bottom-box">
-				<textarea placeholder="请输入" class="input-box"
+				<textarea placeholder="请输入" v-model="param.message" class="input-box"
 				@focus="rearchDown" :adjust-position="false" auto-height />
+				<view class="send-btn" :class="{'disable': !param.message}" @click="sendMessage">
+					发送
+				</view>
 			</view>
 		</view>
 	</view>
@@ -47,6 +50,8 @@
 	import {mapGetters} from "vuex";
 	import SingleRoomTopbar from "./topbar/single-room-topbar.vue";
 	import messageApi from "@/api/chat/message.js";
+	import wsClient from "@/common/js/util/ws-client.js"
+	
 	export default {
 		components: {
 			SingleRoomTopbar
@@ -58,6 +63,14 @@
 				scrollTop: 0,
 				old: {
 					scrollTop: 0
+				},
+				param: {
+					file: null ,
+					message: "", //消息内容
+					msgType: 0, //消息类型
+					senderId: null, //发送者
+					targetId: null, //目标id
+					targetType: 1 //目前为点对点页面，强制定为1
 				},
 				messageList: []
 			}
@@ -74,10 +87,23 @@
 				let height = `calc(100vh - 85rpx - ${this.height}px  - var(--status-bar-height))`
 				return height;
 			},
+			//消息参数
+			messageParam() {
+				let param = this.param
+				param.senderId = this.userInfo.id
+				param.targetId = this.targetInfo.id
+				//封装消息体
+				let messageObj = {
+					statusCode: 200,
+					chatMessage: param
+				}
+				return messageObj
+			},
 		},
 		async onLoad(param) {
 			let targetInfo = param.target_info
 			this.targetInfo = JSON.parse(targetInfo)
+			this.receiveMessage()
 			//软键盘升起降落的时候，软键盘高度监控
 			uni.onKeyboardHeightChange(res =>{
 			    //获取键盘高度
@@ -111,6 +137,35 @@
 				}
 				const res = await messageApi.getSingleMessage(param)
 				this.messageList = res
+			},
+			//参数初始化
+			dataClear() {
+				this.param = this.$opation.data().param
+			},
+			//发送消息
+			sendMessage() {
+				if(this.param.message) {
+					//只有文字会通过这个发送出去 文字中包含表情
+					this.param.msgType = 1
+					let str = JSON.stringify(this.messageParam)
+					wsClient.send(str)
+				}
+				
+			},
+			//接受消息
+			receiveMessage() {
+				wsClient.receiveMessage((res)=>{
+					let obj = JSON.parse(res)
+					let message = obj.chatMessage
+					//只有是200消息体 且发送者与接受者对应的上才允许接受消息
+					if(obj.statusCode === 200 && (
+						this.targetInfo.id === message.senderId && this.userInfo.id === message.targetId
+						||
+						this.userInfo.id === message.senderId && this.targetInfo.id === message.targetId
+					)) {
+						this.messageList.push(message)
+					}
+				})
 			}
 		}
 	}
@@ -135,12 +190,12 @@
 			background-color: $global-general;
 			flex: 1;
 			.message-list {
-				padding: 0 20rpx;
+				padding: 20rpx;
 				.message-item {
 					display: flex;
 					align-items: center;
-					margin-top: 20rpx;
 					flex-direction: row-reverse;
+					margin-bottom: 25rpx;
 					&.left {
 						flex-direction: row;
 					}	
@@ -173,6 +228,7 @@
 			}
 		}
 		.bottom-box {
+			display: flex;
 			padding: 15rpx;
 			box-sizing: border-box;
 			background-color: $global-general;
@@ -181,8 +237,24 @@
 				box-sizing: border-box;
 				background-color: #ffffff;
 				padding: 18rpx;
-				border-radius: 32rpx;
+				border-top-left-radius: 32rpx;
+				border-bottom-left-radius: 32rpx;
+				margin-right: 20rpx;
 			}	
+			.send-btn {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: #ffffff;
+				width: 125rpx;
+				background-color: $global-primary;
+				border-top-right-radius: 32rpx;
+				border-bottom-right-radius: 32rpx;
+				transition: background-color .2s;
+				&.disable {
+					background-color: lighten($global-primary, 40%);
+				}
+			}
 		}
 	}
 </style>

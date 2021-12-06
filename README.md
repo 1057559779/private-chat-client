@@ -4,8 +4,23 @@
 私人聊天的客户端
 
 #### 软件架构
-软件架构说明
+消息结构
+{
+	statusCode: "状态码",
+	content: "消息内容 除了部分状态码外，均规定为 json"
+}
 
+ChatMessage结构如下
+{
+	createdTime: "2021-11-23T20:10:10" //消息发送的时间，由后端生成
+	file: null // 如果消息类型为3或者为4的时候有用 ，文件字段
+	id: "03e788cf4c5611ec837b0242ac110004" //消息id 会自动生成
+	message: "开始测试" //消息内容
+	msgType: 1 //消息类型
+	senderId: "1" //发送者
+	targetId: null //目标id
+	targetType: 0 //目标类型 如果为1代表人对人，2代表群聊
+}
 
 #### 安装教程
 
