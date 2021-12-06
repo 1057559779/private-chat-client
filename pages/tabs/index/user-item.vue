@@ -1,6 +1,6 @@
 <template>
 	<view class="user-item" v-if="item" @click="click">
-		<u-avatar :size="100" class="item-avatar" :src="item.targetUserInfo.avatar?item.targetUserInfo.avatar:''" mode="square"></u-avatar>
+		<u-avatar :size="100" class="item-avatar" :src="item.targetUserInfo.avatar" mode="square"></u-avatar>
 		<!-- 此层wrap在此为必写的，否则可能会出现标题定位错误 -->
 		<view class="title-wrap">
 			<view class="item-top">
