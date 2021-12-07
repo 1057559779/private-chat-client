@@ -97,7 +97,7 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/api" : {
-                    "target" : "http://127.0.0.1:9090",
+                    "target" : "http://1.116.67.83:9090",
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {

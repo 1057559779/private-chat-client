@@ -6,7 +6,7 @@
 </template>
 
 <script>
-	import wsClient from "@/common/js/util/ws-client.js"
+	
 	
 	export default {
 		data() {
@@ -16,7 +16,7 @@
 		},
 		methods: {
 			sendMsg() {
-				wsClient.send("firechildren")
+				//wsClient.send("firechildren")
 			}
 		},
 		onLoad() {
