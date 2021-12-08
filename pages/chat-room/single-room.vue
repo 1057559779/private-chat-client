@@ -16,11 +16,13 @@
 			<scroll-view 
 				:scroll-with-animation="true"
 				:scroll-y="true"
+				@scrolltoupper="upLoadMessage"
 				:scroll-top="scrollTop"
 				@scroll="scroll"
 				class="message-box">
 				<!-- 必须要有 message-list这个class 因为我是用这个class来计算scroll-view的高度的-->
 				<view id="messageList" class="message-list">
+					<view class="message-loading" v-if="messageLoading">加载...</view>
 					<view class="message-item" :class="{'left':item.senderId !== userInfo.id }" v-for="(item,index) in messageList" :key="index">
 						<view class="avatar">
 							<u-avatar :size="55" class="avatar"
@@ -38,7 +40,8 @@
 			<view class="bottom-box">
 				<textarea placeholder="请输入" v-model="param.message" class="input-box"
 				@focus="rearchDown" :adjust-position="false" auto-height />
-				<view class="send-btn" :class="{'disable': !param.message}" @click="sendMessage">
+				<!-- 使用 @touchend.prevent而不是@click 是为了点击发送后不让焦点消失-->
+				<view class="send-btn" @touchend.prevent="sendMessage" :class="{'disable': !param.message}">
 					发送
 				</view>
 			</view>
@@ -72,6 +75,11 @@
 					targetId: null, //目标id
 					targetType: 1 //目前为点对点页面，强制定为1
 				},
+				page: {
+					current: 1,
+					size: 20
+				},
+				messageLoading: false,
 				messageList: []
 			}
 		},
@@ -101,16 +109,21 @@
 			},
 		},
 		async onLoad(param) {
-			let targetInfo = param.target_info
-			this.targetInfo = JSON.parse(targetInfo)
-			this.receiveMessage()
 			//软键盘升起降落的时候，软键盘高度监控
 			uni.onKeyboardHeightChange(res =>{
 			    //获取键盘高度
 				this.height = res.height
 			})
+			
+			let targetInfo = param.target_info
+			this.targetInfo = JSON.parse(targetInfo)
+			this.messageList = []
+			this.receiveMessage()
+			
 			//获得最新的十条记录 后续新记录则unshift到头部
 			await this.getMessageList()
+			
+			this.rearchDown()
 		},
 		methods: {
 			scroll(e) {
@@ -131,12 +144,20 @@
 			},
 			//获得消息列表
 			async getMessageList() {
+				this.messageLoading = true
 				//获得目标人的id
 				let param = {
-					targetId: this.targetInfo.id
+					targetId: this.targetInfo.id,
+					current: this.page.current,
+					size: 15
 				}
 				const res = await messageApi.getSingleMessage(param)
-				this.messageList = res
+				this.messageList.unshift(...res) 
+				this.messageLoading = false
+			},
+			upLoadMessage() {
+				this.page.current+=1
+				this.getMessageList()
 			},
 			//参数初始化
 			dataClear() {
@@ -149,6 +170,10 @@
 					this.param.msgType = 1
 					let str = JSON.stringify(this.messageParam)
 					wsClient.send(str)
+					//输入框中的内容清空
+					this.param.message = ""
+					//输完一个消息，到达底部
+					this.rearchDown()
 				}
 				
 			},
@@ -191,6 +216,10 @@
 			flex: 1;
 			.message-list {
 				padding: 20rpx;
+				.message-loading {
+					text-align: center;
+					color: #999999;
+				}
 				.message-item {
 					display: flex;
 					align-items: center;
