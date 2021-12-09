@@ -8,4 +8,14 @@ export default {
 		let url = '/res/chat_lately/search'
 		return await http.get(url)
 	},
+	
+	/**
+	 * 设置当前聊天室的标识 并且清空当前聊天室的未读消息
+	 */
+	async setRoom(param) {
+		let url = '/res/chat_lately/set_room'
+		return await http.post(url,param)
+	},
+	
+	
 }

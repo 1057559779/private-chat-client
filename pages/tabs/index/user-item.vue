@@ -11,7 +11,7 @@
 				<view class="message">
 					{{item.message}}
 				</view>
-				<view class="no-read">
+				<view class="no-read" v-if="item.noRead > 0">
 					{{item.noRead>99?"99+":item.noRead}}
 				</view>
 			</view>

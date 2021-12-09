@@ -22,8 +22,9 @@
 	import IndexTopBar from "@/pages/tabs/index/index-topbar.vue";
 	import {mapGetters} from "vuex";
 	import latelyApi from "@/api/chat/lately.js";
-	import UserItem from "./user-item.vue"
-	import GroupItem from "./group-item.vue"
+	import UserItem from "./user-item.vue";
+	import GroupItem from "./group-item.vue";
+	import wsClient from "@/common/js/util/ws-client.js";
 	export default {
 		components: {
 			IndexTopBar,
@@ -72,11 +73,19 @@
 				})
 			},
 			//打开聊天室
-			openChatRoom(item) {
+			async openChatRoom(item) {
 				
 				let type = item.type
 				//类型1 点对点
 				if(type === 1) {
+					
+					let param = {
+						type: type,
+						targetId: item.targetUserInfo['id']
+					}
+					await latelyApi.setRoom(param)
+					
+					
 					//为了节省传输大小，selfComment不传递过去了
 					delete item.targetUserInfo['selfComment']
 					let targetInfo = JSON.stringify(item.targetUserInfo)
@@ -91,11 +100,22 @@
 						url: `/pages/chat-room/group-room?target_info=${targetInfo}`
 					})
 				}
-				
+			},
+			//消息接受
+			receiveMessage() {
+				wsClient.receiveMessage((res)=>{
+					let obj = JSON.parse(res)
+					let message = obj.chatMessage
+					
+					if(obj.statusCode === 200 ) {
+						
+					}
+				})
 			}
 		},
 		mounted() {
 			this.getLatelyList()
+			this.receiveMessage()
 		}
 	}
 </script>
