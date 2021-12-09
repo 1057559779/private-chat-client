@@ -38,7 +38,7 @@
 		},
 		methods: {
 			back() {
-				uni.navigateBack()
+				this.$emit('back')
 			}
 		}
 	}

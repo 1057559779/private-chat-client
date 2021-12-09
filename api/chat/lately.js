@@ -17,5 +17,12 @@ export default {
 		return await http.post(url,param)
 	},
 	
+	/**
+	 * 移除当前聊天室的标识
+	 */
+	async removeRoomFlag(param) {
+		let url = '/res/chat_lately/remove_room_flag'
+		return await http.post(url,param)
+	},
 	
 }

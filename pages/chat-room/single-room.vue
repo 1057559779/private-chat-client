@@ -6,7 +6,7 @@
 		adjust-position=false 输入框设置这个属性，在触发焦点的时候不上移窗体，因为这种方式上移窗体会导致topbar也上移
 	 -->
 	<view class="single-room-page" @touchmove.stop.prevent>
-		<SingleRoomTopbar :target-info="targetInfo"></SingleRoomTopbar>
+		<SingleRoomTopbar @back="back" :target-info="targetInfo"></SingleRoomTopbar>
 		<!-- 
 			当软键盘上升的时候 取消安全域 
 		-->
@@ -53,6 +53,7 @@
 	import {mapGetters} from "vuex";
 	import SingleRoomTopbar from "./topbar/single-room-topbar.vue";
 	import messageApi from "@/api/chat/message.js";
+	import latelyApi from "@/api/chat/lately.js";
 	import wsClient from "@/common/js/util/ws-client.js"
 	
 	export default {
@@ -189,9 +190,26 @@
 						this.userInfo.id === message.senderId && this.targetInfo.id === message.targetId
 					)) {
 						this.messageList.push(message)
+						//每接受一个消息，就下降
+						this.rearchDown()
 					}
 				})
+			},
+			async removeRoomFlag() {
+				let param = {
+					type: 1,
+					targetId: this.targetInfo.id
+				}
+				await latelyApi.removeRoomFlag(param)
+			},
+			back() {
+				uni.navigateBack()
 			}
+		},
+		async onUnload() {
+			//页面退出的时候，删除room标识，
+			//后期应用退出可以把type 和 targetId 传递进 vuex中后用应用生命周期来删除标识
+			this.removeRoomFlag()
 		}
 	}
 </script>
