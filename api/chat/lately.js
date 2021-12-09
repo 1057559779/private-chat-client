@@ -12,8 +12,8 @@ export default {
 	/**
 	 * 设置当前聊天室的标识 并且清空当前聊天室的未读消息
 	 */
-	async setRoom(param) {
-		let url = '/res/chat_lately/set_room'
+	async setRoomFlag(param) {
+		let url = '/res/chat_lately/set_room_flag'
 		return await http.post(url,param)
 	},
 	

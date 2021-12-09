@@ -83,7 +83,7 @@
 						type: type,
 						targetId: item.targetUserInfo['id']
 					}
-					await latelyApi.setRoom(param)
+					await latelyApi.setRoomFlag(param)
 					
 					
 					//为了节省传输大小，selfComment不传递过去了
