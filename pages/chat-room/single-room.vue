@@ -50,7 +50,7 @@
 </template>
 
 <script>
-	import {mapGetters} from "vuex";
+	import {mapMutations,mapGetters} from "vuex";
 	import SingleRoomTopbar from "./topbar/single-room-topbar.vue";
 	import messageApi from "@/api/chat/message.js";
 	import latelyApi from "@/api/chat/lately.js";
@@ -86,7 +86,8 @@
 		},
 		computed: {
 			...mapGetters({
-				userInfo: "user/getUserInfo"
+				userInfo: "user/getUserInfo",
+				roomFlag: "chat/getRoomFlag"
 			}),
 			//弹性高度
 			elasticHeight() {
@@ -127,6 +128,11 @@
 			this.rearchDown()
 		},
 		methods: {
+			...mapMutations({
+			    removeRoomFlagVX(commit) {
+			       commit("chat/REMOVE_ROOM_FLAG")
+			    },
+			}),
 			scroll(e) {
 			    this.old.scrollTop = e.detail.scrollTop
 			},
@@ -190,7 +196,7 @@
 						this.userInfo.id === message.senderId && this.targetInfo.id === message.targetId
 					)) {
 						this.messageList.push(message)
-						//每接受一个消息，就下降
+						//每接受一个消息，就下降 后续应该是 当前已经处于底端当才 reachDown
 						this.rearchDown()
 					}
 				})
@@ -207,6 +213,8 @@
 			}
 		},
 		async onUnload() {
+			//删除vuex中的标识
+			this.removeRoomFlagVX()
 			//页面退出的时候，删除room标识，
 			//后期应用退出可以把type 和 targetId 传递进 vuex中后用应用生命周期来删除标识
 			this.removeRoomFlag()

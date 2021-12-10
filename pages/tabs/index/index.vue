@@ -20,7 +20,8 @@
 <script>
 	//封装页面	
 	import IndexTopBar from "@/pages/tabs/index/index-topbar.vue";
-	import {mapGetters} from "vuex";
+	import {mapMutations,mapGetters,mapState} from "vuex"
+	import store from "@/store/index.js"
 	import latelyApi from "@/api/chat/lately.js";
 	import UserItem from "./user-item.vue";
 	import GroupItem from "./group-item.vue";
@@ -32,13 +33,16 @@
 			GroupItem,
 		},
 		computed: {
+			...mapState({
+			    latelyList: (state) => state.chat.latelyList,
+			}),
 			...mapGetters({
-				userInfo: "user/getUserInfo"
+				userInfo: "user/getUserInfo",
+				roomFlag:"chat/getRoomFlag"
 			})
 		},
 		data() {
 			return {
-				latelyList: [],
 				options: [
 					{
 						text: '删除',
@@ -50,14 +54,24 @@
 			}
 		},
 		methods: {
+			...mapMutations({
+			    setRoomFlag(commit, flag) {
+			      commit("chat/SET_ROOM_FLAG", flag)
+			    },
+				setLatelyList(commit, list) {
+			      commit("chat/SET_LATELY_LIST", list)
+			    },
+			}),
+			//当页面拉动到底部到时候，回调
 			reachBottom() {
 				console.log("hi")
-				
 			},
 			async getLatelyList() {
 				let res = await latelyApi.getLately()
+				//res 放入vuex中
 				res.forEach(e => e.show = false)
-				this.latelyList = res
+				this.setLatelyList(res)
+				//this.latelyList = res
 			},
 			//并不是item的点击，而是action
 			click(row, action) {
@@ -84,7 +98,8 @@
 						targetId: item.targetUserInfo['id']
 					}
 					await latelyApi.setRoomFlag(param)
-					
+					//vuex 加入 roomFlag
+					this.setRoomFlag(param)
 					
 					//为了节省传输大小，selfComment不传递过去了
 					delete item.targetUserInfo['selfComment']
