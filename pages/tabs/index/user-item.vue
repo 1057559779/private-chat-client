@@ -5,7 +5,7 @@
 		<view class="title-wrap">
 			<view class="item-top">
 				<text class="nick-name">{{ item.targetUserInfo.showName }}</text>
-				<text class="last-time">{{ new Date(item.updateTime).format("MM/dd") }}</text>
+				<text class="last-time">{{ new Date(item.updateTime).format("hh:mm:ss") }}</text>
 			</view>
 			<view class="item-bottom">
 				<view class="message">

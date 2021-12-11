@@ -5,8 +5,8 @@
 		</view>
 		<scroll-view :scroll-y="true" @scrolltolower="reachBottom" class="index-box">
 			<view class="lately-list">
-					<u-swipe-action :show="item.show" :index="index" 
-						v-for="(item, index) in latelyList" :key="item.id" 
+					<u-swipe-action :show="item.show" :index="item.targetId" 
+						v-for="(item, index) in latelyList" :key="item.targetId" 
 						@click="click" @open="open"
 						:options="options">
 						<UserItem @click="openChatRoom(item)" :item="item" v-if="item.type === 1"></UserItem>
@@ -25,7 +25,6 @@
 	import latelyApi from "@/api/chat/lately.js";
 	import UserItem from "./user-item.vue";
 	import GroupItem from "./group-item.vue";
-	import wsClient from "@/common/js/util/ws-client.js";
 	export default {
 		components: {
 			IndexTopBar,
@@ -38,7 +37,6 @@
 			}),
 			...mapGetters({
 				userInfo: "user/getUserInfo",
-				roomFlag:"chat/getRoomFlag"
 			})
 		},
 		data() {
@@ -97,8 +95,9 @@
 						type: type,
 						targetId: item.targetUserInfo['id']
 					}
+					//这个接口中，同时会清空noRead
 					await latelyApi.setRoomFlag(param)
-					//vuex 加入 roomFlag
+					
 					this.setRoomFlag(param)
 					
 					//为了节省传输大小，selfComment不传递过去了
@@ -116,21 +115,9 @@
 					})
 				}
 			},
-			//消息接受
-			receiveMessage() {
-				wsClient.receiveMessage((res)=>{
-					let obj = JSON.parse(res)
-					let message = obj.chatMessage
-					
-					if(obj.statusCode === 200 ) {
-						
-					}
-				})
-			}
 		},
 		mounted() {
 			this.getLatelyList()
-			this.receiveMessage()
 		}
 	}
 </script>

@@ -50,7 +50,7 @@
 </template>
 
 <script>
-	import {mapMutations,mapGetters} from "vuex";
+	import {mapMutations,mapGetters,mapState} from "vuex";
 	import SingleRoomTopbar from "./topbar/single-room-topbar.vue";
 	import messageApi from "@/api/chat/message.js";
 	import latelyApi from "@/api/chat/lately.js";
@@ -74,7 +74,8 @@
 					msgType: 0, //消息类型
 					senderId: null, //发送者
 					targetId: null, //目标id
-					targetType: 1 //目前为点对点页面，强制定为1
+					targetType: 1, //目前为点对点页面，强制定为1
+					createdTime: null
 				},
 				page: {
 					current: 1,
@@ -85,9 +86,13 @@
 			}
 		},
 		computed: {
+			...mapState({
+			    latelyList: (state) => state.chat.latelyList,
+			}),
 			...mapGetters({
 				userInfo: "user/getUserInfo",
-				roomFlag: "chat/getRoomFlag"
+				roomFlag: "chat/getRoomFlag",
+				nowMessage: "chat/getNowMessage"
 			}),
 			//弹性高度
 			elasticHeight() {
@@ -120,7 +125,6 @@
 			let targetInfo = param.target_info
 			this.targetInfo = JSON.parse(targetInfo)
 			this.messageList = []
-			this.receiveMessage()
 			
 			//获得最新的十条记录 后续新记录则unshift到头部
 			await this.getMessageList()
@@ -175,6 +179,8 @@
 				if(this.param.message) {
 					//只有文字会通过这个发送出去 文字中包含表情
 					this.param.msgType = 1
+					//添加当前时间
+					this.messageParam.chatMessage.createdTime = new Date()
 					let str = JSON.stringify(this.messageParam)
 					wsClient.send(str)
 					//输入框中的内容清空
@@ -182,24 +188,6 @@
 					//输完一个消息，到达底部
 					this.rearchDown()
 				}
-				
-			},
-			//接受消息
-			receiveMessage() {
-				wsClient.receiveMessage((res)=>{
-					let obj = JSON.parse(res)
-					let message = obj.chatMessage
-					//只有是200消息体 且发送者与接受者对应的上才允许接受消息
-					if(obj.statusCode === 200 && (
-						this.targetInfo.id === message.senderId && this.userInfo.id === message.targetId
-						||
-						this.userInfo.id === message.senderId && this.targetInfo.id === message.targetId
-					)) {
-						this.messageList.push(message)
-						//每接受一个消息，就下降 后续应该是 当前已经处于底端当才 reachDown
-						this.rearchDown()
-					}
-				})
 			},
 			async removeRoomFlag() {
 				let param = {
@@ -210,14 +198,28 @@
 			},
 			back() {
 				uni.navigateBack()
+				//页面退出的时候，删除room标识，
+				this.removeRoomFlag()
+				//删除vuex中的标识
+				this.removeRoomFlagVX()
 			}
 		},
-		async onUnload() {
-			//删除vuex中的标识
-			this.removeRoomFlagVX()
-			//页面退出的时候，删除room标识，
-			//后期应用退出可以把type 和 targetId 传递进 vuex中后用应用生命周期来删除标识
-			this.removeRoomFlag()
+		watch: {
+			nowMessage(res){
+				let obj = res
+				let message = obj.chatMessage
+				//只有是200消息体 且发送者与接受者对应的上才允许接受消息
+				if(obj.statusCode === 200 && (
+					this.targetInfo.id === message.senderId && this.userInfo.id === message.targetId
+					||
+					this.userInfo.id === message.senderId && this.targetInfo.id === message.targetId
+				)) {
+					this.messageList.push(message)
+					//每接受一个消息，就下降 后续应该是 当前已经处于底端当才 reachDown
+					this.rearchDown()
+					//更新最新联系人
+				}
+			}
 		}
 	}
 </script>
