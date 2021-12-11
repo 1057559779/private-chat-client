@@ -19,7 +19,8 @@
 				@scrolltoupper="upLoadMessage"
 				:scroll-top="scrollTop"
 				@scroll="scroll"
-				class="message-box">
+				class="message-box"
+				id="messageBox">
 				<!-- 必须要有 message-list这个class 因为我是用这个class来计算scroll-view的高度的-->
 				<view id="messageList" class="message-list">
 					<view class="message-loading" v-if="messageLoading">加载...</view>
@@ -39,7 +40,7 @@
 			</scroll-view>
 			<view class="bottom-box">
 				<textarea placeholder="请输入" v-model="param.message" class="input-box"
-				@focus="rearchDown" :adjust-position="false" auto-height />
+				 :adjust-position="false" auto-height />
 				<!-- 使用 @touchend.prevent而不是@click 是为了点击发送后不让焦点消失-->
 				<view class="send-btn" @touchend.prevent="sendMessage" :class="{'disable': !param.message}">
 					发送
@@ -82,7 +83,8 @@
 					size: 20
 				},
 				messageLoading: false,
-				messageList: []
+				messageList: [],
+				isBottom: false
 			}
 		},
 		computed: {
@@ -138,18 +140,45 @@
 			    },
 			}),
 			scroll(e) {
-			    this.old.scrollTop = e.detail.scrollTop
+				let detail = e.detail
+			    this.old.scrollTop = detail.scrollTop
+				
+				//判断是否已经到达底部
+				this.getBoxDom(box => {
+					this.getMessageDom(list => {
+						if(box.height + detail.scrollTop === list.height) {
+							this.isBottom = true
+						}else {
+							this.isBottom = false
+						}
+					})
+				})
+			},
+			getBoxDom(call) {
+				this.$nextTick(function(){
+					let info = uni.createSelectorQuery().select("#messageBox");
+					　　　  　info.boundingClientRect((data) => { //data - 各种参数
+							 call(data)
+					}).exec()
+				})
+			},
+			//获得消息列表的高度
+			getMessageDom(call) {
+				this.$nextTick(function(){
+					let info = uni.createSelectorQuery().select("#messageList");
+					　　　  　info.boundingClientRect((data) => { //data - 各种参数
+							 call(data)
+					}).exec()
+				})
 			},
 			//到达scroll-view 最底端
 			rearchDown() {
 				setTimeout(()=>{
 					this.scrollTop = this.old.scrollTop
 					this.$nextTick(function(){
-						 
-						let info = uni.createSelectorQuery().select("#messageList");
-						　　　  　info.boundingClientRect((data) => { //data - 各种参数
-						　　　  　this.scrollTop = data.height
-						}).exec()
+						 this.getMessageDom(data =>{
+							 this.scrollTop = data.height
+						 })
 					})
 				},300)
 			},
@@ -205,6 +234,7 @@
 			}
 		},
 		watch: {
+			//监听新消息
 			nowMessage(res){
 				let obj = res
 				let message = obj.chatMessage
@@ -215,9 +245,11 @@
 					this.userInfo.id === message.senderId && this.targetInfo.id === message.targetId
 				)) {
 					this.messageList.push(message)
-					//每接受一个消息，就下降 后续应该是 当前已经处于底端当才 reachDown
-					this.rearchDown()
-					//更新最新联系人
+					//消息是自己发到，或者已经处于底端了，新发到消息会到达底端
+					if(message.senderId === this.userInfo.id || this.isBottom) {
+						this.rearchDown()
+					} 
+					
 				}
 			}
 		}
