@@ -40,7 +40,7 @@
 			</scroll-view>
 			<view class="bottom-box">
 				<textarea placeholder="请输入" v-model="param.message" class="input-box"
-				 :adjust-position="false" auto-height />
+				@focus="rearchDown" :adjust-position="false" auto-height />
 				<!-- 使用 @touchend.prevent而不是@click 是为了点击发送后不让焦点消失-->
 				<view class="send-btn" @touchend.prevent="sendMessage" :class="{'disable': !param.message}">
 					发送
