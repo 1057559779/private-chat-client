@@ -14,12 +14,14 @@
 	import tabbarList from "@/config/base/tabbar-list.js"
 	import IndexPage from "@/pages/tabs/index/index.vue"
 	import MyCenterPage from "@/pages/tabs/my-center/my-center.vue"
+	import Relation from "@/pages/tabs/relation/relation.vue"
 	import MyTabbar from "@/components/my-tabbar.vue"
 	export default {
 		components: {
 			MyTabbar,
 			IndexPage,
-			MyCenterPage
+			MyCenterPage,
+			Relation
 		},
 		computed: {
 			//激活的tabbar页，搭配component组件 is为空的，则不挂载组件 美其名曰懒加载

@@ -19,7 +19,7 @@
 
 <script>
 	//封装页面	
-	import IndexTopBar from "@/pages/tabs/index/index-topbar.vue";
+	import IndexTopBar from "./index-topbar.vue";
 	import {mapMutations,mapGetters,mapState} from "vuex"
 	import store from "@/store/index.js"
 	import latelyApi from "@/api/chat/lately.js";
