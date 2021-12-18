@@ -7,7 +7,7 @@
 			<view class="lately-list">
 					<u-swipe-action :show="item.show" :index="item.targetId" 
 						v-for="(item, index) in latelyList" :key="item.targetId" 
-						@click="click" @open="open"
+						@click="click" @open="(index)=>open(index,item.targetId)"
 						:options="options">
 						<UserItem @click="openChatRoom(item)" :item="item" v-if="item.type === 1"></UserItem>
 						<GroupItem @click="openChatRoom(item)" :item="item" v-if="item.type === 2"></GroupItem>
@@ -76,12 +76,14 @@
 				console.log(action)
 			},
 			// 如果打开一个的时候，不需要关闭其他，则无需实现本方法
-			open(index) {
+			open(index,id) {
+				let indexReal = this.latelyList.findIndex(e => e.targetId === id)
 				// 先将正在被操作的swipeAction标记为打开状态，否则由于props的特性限制，
 				// 原本为'false'，再次设置为'false'会无效
-				this.latelyList[index].show = true;
+				this.latelyList[indexReal].show = true
+			
 				this.latelyList.map((val, idx) => {
-					if(index != idx) this.latelyList[idx].show = false;
+					if(indexReal != idx) this.latelyList[idx].show = false;
 				})
 			},
 			//打开聊天室

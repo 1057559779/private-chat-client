@@ -7,16 +7,18 @@
 	import userInfoApi from "@/api/user/info.js"
 	export default {
 		onLaunch: function() {
-			//初始化
-			this.init();
+			//ios下 切出应用就会断连 所以连接建立放在onShow中
 		},
 		onShow: function() {
+			//初始化
+			this.init();
 			//如果存在room标识，则在页面回来当时候再加进去
 			if(this.roomFlag && this.roomFlag.targetId) {
 				latelyApi.setRoomFlag(this.roomFlag)
 			}
 		},
 		onHide: function() {
+			wsClient.close()
 			//redis中标识删除
 			if(this.roomFlag && this.roomFlag.targetId) {
 				latelyApi.removeRoomFlag(this.roomFlag)
