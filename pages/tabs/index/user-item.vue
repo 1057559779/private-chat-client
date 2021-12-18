@@ -59,12 +59,16 @@
 				.nick-name {
 					font-size: 32rpx;
 				}
+				.last-time {
+					color: #999999;
+				}
 			}
 			.item-bottom {
 				margin-top: 10rpx;
 				display: flex;
 				justify-content: space-between;
 				.message {
+					color: #999999;
 					width: 550rpx;
 					overflow: hidden;
 					text-overflow: ellipsis;
