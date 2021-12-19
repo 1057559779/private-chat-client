@@ -3,7 +3,7 @@
 	<view class="single-page">
 		<!-- 多个component + v-show 来模拟页面缓存 以及 初次运行app 只运行首页 -->
 		<component v-for="(item,index) in allPageList" :key="index" 
-			v-show="current === index" :ref="item.name" :is="activePageList[index]">
+			v-show="current === index" ref="singlePage" :is="activePageList[index]">
 		</component>
 		<!-- 自定义的tabbar -->
 		<MyTabbar :current="current" @click="clickTabbar"></MyTabbar>
@@ -51,7 +51,22 @@
 			clickTabbar(index) {
 				this.activePageList[index] = this.allPageList[index]
 				this.current = index
+				//不等于0是因为activePageList默认第一个有值
+				this.$nextTick(()=>{
+					if(index !== 0) {
+						this.$refs.singlePage[index].loadData()
+					}
+				})
+				
 			}
+		},
+		onShow() {
+			this.$nextTick(()=>{
+				//每次页面进来的时候，已经激活的页面重新再加载一遍
+				this.activePageList.forEach((e,index) => {
+					this.$refs.singlePage[index].loadData()
+				})
+			})
 		}
 	}
 </script>

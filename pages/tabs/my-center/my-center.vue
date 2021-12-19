@@ -87,6 +87,9 @@
 				    url: url,
 				})
 			},	
+			loadData() {
+				//目前没用到什么，是为了配合single中的onShow
+			}
 		}
 	}
 </script>

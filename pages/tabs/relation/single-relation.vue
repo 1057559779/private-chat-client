@@ -31,10 +31,10 @@
 			async getRelationList() {
 				let res = await relationApi.getSingleRelationList()
 				this.relationList = res
+			},
+			loadData() {
+				this.getRelationList()
 			}
-		},
-		mounted() {
-			this.getRelationList()
 		}
 	}
 </script>

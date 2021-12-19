@@ -10,7 +10,7 @@
 			</view>
 			<swiper class="swiper-box" :current="swiperCurrent" @transition="transition" @animationfinish="animationfinish">
 				<swiper-item class="swiper-item">
-					<SingleRelation></SingleRelation>
+					<SingleRelation ref="singleRelation"></SingleRelation>
 				</swiper-item>
 				<swiper-item class="swiper-item">
 					<GroupRelation></GroupRelation>
@@ -66,6 +66,9 @@
 			// scroll-view到底部加载更多
 			onreachBottom() {
 				
+			},
+			loadData() {
+				this.$refs.singleRelation.loadData()
 			}
 		}
 	}

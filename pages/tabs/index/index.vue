@@ -117,9 +117,9 @@
 					})
 				}
 			},
-		},
-		mounted() {
-			this.getLatelyList()
+			loadData() {
+				this.getLatelyList()
+			}
 		}
 	}
 </script>
