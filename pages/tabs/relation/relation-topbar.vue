@@ -10,7 +10,20 @@
 					{{userInfo.showName}}
 				</view>
 				<view class="right">
-					<u-icon name="plus"></u-icon>
+					<MyDropDown>
+						<template #title>
+							<u-icon name="plus"></u-icon>
+						</template>
+						<template #list>
+							<view class="choise-box">
+								<view class="choise-drop-down-item" @click="runToUserAddPage">
+									加好友
+								</view>
+								<view class="choise-drop-down-item">暂未开发</view>
+								<view class="choise-drop-down-item">暂未开发</view>
+							</view>
+						</template>
+					</MyDropDown>
 				</view>
 			</view>
 		</MyTopBar>
@@ -18,12 +31,14 @@
 </template>
 
 <script>
+	import MyDropDown from "@/components/my-drop-down.vue"
 	import MyTopBar from "@/components/my-topbar.vue";
 	import {mapGetters} from "vuex";
 	
 	export default {
 		components: {
 			MyTopBar,
+			MyDropDown
 		},
 		data() {
 			return {
@@ -36,7 +51,12 @@
 			})	
 		},
 		methods: {
-			
+			//跳转到用户添加页
+			runToUserAddPage() {
+				uni.navigateTo({
+					url: "/pages/user-add/user-add"
+				})
+			}
 		}
 		
 	}
@@ -58,6 +78,16 @@
 			//padding: 0 20rpx;
 			text-align: center;
 			font-size: 32rpx;
+		}
+		.choise-box {
+			background-color: #ffffff;
+			border-radius: 20rpx;
+			.choise-drop-down-item {
+				color: #000000;
+				padding: 24rpx 0;
+				text-align: center;
+				font-size: 28rpx;
+			}
 		}
 	}
 </style>

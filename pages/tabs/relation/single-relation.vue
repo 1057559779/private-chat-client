@@ -1,5 +1,10 @@
 <template>
 	<scroll-view scroll-y class="single-relation">
+		<view class="new-request">
+			<view class="request-item">
+				好友请求
+			</view>
+		</view>
 		<view class="relation-list">
 			<view class="relation-item" v-for="(item,index) in relationList" :key="index">
 				<u-avatar :size="100" class="item-avatar" :src="item.targetUserInfo.avatar" mode="square"></u-avatar>
@@ -42,6 +47,14 @@
 <style lang="scss" scoped>
 	.single-relation {
 		height: 100%;
+		.new-request {
+			.request-item {
+				padding: 25rpx;
+				background-color: #ffffff;
+			}
+			padding-bottom: 20rpx;
+			background-color: #edf2f1;
+		}
 		.relation-list {
 			.relation-item {
 				display: flex;
