@@ -5,6 +5,7 @@
 		</view>
 		<scroll-view :scroll-y="true" @scrolltolower="reachBottom" class="index-box">
 			<view class="lately-list">
+				{{onShowFlag}}
 					<u-swipe-action :show="item.show" :index="item.targetId" 
 						v-for="(item, index) in latelyList" :key="item.targetId" 
 						@click="click" @open="(index)=>open(index,item.targetId)"
@@ -34,6 +35,7 @@
 		computed: {
 			...mapState({
 			    latelyList: (state) => state.chat.latelyList,
+				onShowFlag: (state) => state.support.onShowFlag
 			}),
 			...mapGetters({
 				userInfo: "user/getUserInfo",
@@ -119,6 +121,15 @@
 			},
 			loadData() {
 				this.getLatelyList()
+			}
+		},
+		mounted() {
+			this.loadData()
+		},
+		watch:{
+			//single 触发onShow 监听onShow 然后继续触发
+			onShowFlag() {
+				this.loadData()
 			}
 		}
 	}

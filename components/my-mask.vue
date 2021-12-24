@@ -1,6 +1,6 @@
 <!-- 自定义遮罩层 -->
 <template>
-	<view class="my-mask" hover-stop-propagation 
+	<view v-if="show" class="my-mask" hover-stop-propagation 
 		:style="[maskStyle]" 
 		@tap="click"
 		@touchmove.stop.prevent="() => {}" 

@@ -21,6 +21,7 @@
 </template>
 
 <script>
+	import {mapMutations,mapGetters,mapState} from "vuex"
 	import RelationTopbar from "./relation-topbar.vue"
 	import SingleRelation from "./single-relation.vue"
 	import GroupRelation from "./group-relation.vue"
@@ -29,6 +30,11 @@
 			RelationTopbar,
 			SingleRelation,
 			GroupRelation
+		},
+		computed: {
+			...mapState({
+				onShowFlag: (state) => state.support.onShowFlag
+			}),	
 		},
 		data() {
 			return {
@@ -69,6 +75,15 @@
 			},
 			loadData() {
 				this.$refs.singleRelation.loadData()
+			}
+		},
+		mounted() {
+			this.loadData()
+		},
+		watch:{
+			//single 触发onShow 监听onShow 然后继续触发
+			onShowFlag() {
+				this.loadData()
 			}
 		}
 	}

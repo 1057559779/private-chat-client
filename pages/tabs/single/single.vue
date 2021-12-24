@@ -16,6 +16,7 @@
 	import MyCenterPage from "@/pages/tabs/my-center/my-center.vue"
 	import Relation from "@/pages/tabs/relation/relation.vue"
 	import MyTabbar from "@/components/my-tabbar.vue"
+	import {mapMutations,mapState} from "vuex"
 	export default {
 		components: {
 			MyTabbar,
@@ -47,26 +48,20 @@
 			}
 		},
 		methods: {
+			...mapMutations({
+			    changeOnShow(commit, flag) {
+			      commit("support/SET_ONSHOWFLAG", flag)
+			    },
+			}),
 			//点击tabbar的某个item的时候
 			clickTabbar(index) {
 				this.activePageList[index] = this.allPageList[index]
-				this.current = index
 				//不等于0是因为activePageList默认第一个有值
-				this.$nextTick(()=>{
-					if(index !== 0) {
-						this.$refs.singlePage[index].loadData()
-					}
-				})
-				
+				this.current = index
 			}
 		},
 		onShow() {
-			this.$nextTick(()=>{
-				//每次页面进来的时候，已经激活的页面重新再加载一遍
-				this.activePageList.forEach((e,index) => {
-					this.$refs.singlePage[index].loadData()
-				})
-			})
+			this.changeOnShow(1)
 		}
 	}
 </script>

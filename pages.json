@@ -77,6 +77,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/user-add/user-add",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

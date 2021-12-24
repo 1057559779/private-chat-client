@@ -44,7 +44,9 @@
 			},
 			//点击遮罩层触发
 			hideShadow() {
-				this.shadowShow = false
+				setTimeout(()=>{
+					this.shadowShow = false
+				},0.15 * 1000)
 				this.dropDownHeight = 0
 			}
 		}
