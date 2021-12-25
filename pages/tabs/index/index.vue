@@ -5,7 +5,6 @@
 		</view>
 		<scroll-view :scroll-y="true" @scrolltolower="reachBottom" class="index-box">
 			<view class="lately-list">
-				{{onShowFlag}}
 					<u-swipe-action :show="item.show" :index="item.targetId" 
 						v-for="(item, index) in latelyList" :key="item.targetId" 
 						@click="click" @open="(index)=>open(index,item.targetId)"
