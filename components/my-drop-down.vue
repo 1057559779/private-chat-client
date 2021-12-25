@@ -38,12 +38,14 @@
 			},
 			//获得下拉框的高度
 			getDropDownHeight() {
-				uni.createSelectorQuery().select("#dropDown").boundingClientRect(data => {
+				const query = uni.createSelectorQuery().in(this);
+				query.select("#dropDown").boundingClientRect(data => {
 					this.dropDownHeight = data.height
 				}).exec();
 			},
 			//点击遮罩层触发
 			hideShadow() {
+				//0.15为dropdown高度变化动画执行的时间
 				setTimeout(()=>{
 					this.shadowShow = false
 				},0.15 * 1000)

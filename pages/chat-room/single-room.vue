@@ -156,7 +156,8 @@
 			},
 			getBoxDom(call) {
 				this.$nextTick(function(){
-					let info = uni.createSelectorQuery().select("#messageBox");
+					const query = uni.createSelectorQuery().in(this);
+					let info = query.select("#messageBox");
 					　　　  　info.boundingClientRect((data) => { //data - 各种参数
 							 call(data)
 					}).exec()
