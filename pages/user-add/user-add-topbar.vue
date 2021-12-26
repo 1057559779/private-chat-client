@@ -44,6 +44,9 @@
 			},
 			handleSearch() {
 				this.$emit('search')
+			},
+			back() {
+				uni.navigateBack()
 			}
 		}
 	}
