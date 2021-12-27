@@ -13,16 +13,16 @@
 							{{`${item.showName}(${item.userName})`}}
 						</view>
 						<view class="sex">
-							<text v-if="item.sex" :class="item.sex == 1?'man':'woman'">
+							<view v-if="item.sex" :class="item.sex == 1?'man':'woman'">
 								<u-icon :name="item.sex == 1?'man':'woman'"></u-icon>
-							</text>
+							</view>
 						</view>
 						<view class="comment">
 							{{item.selfComment}}
 						</view>
 					</view>
 					<view class="action">
-						<view class="add-btn">添加</view>
+						<view class="add-btn" @click="addRequest(item.id)">添加</view>
 					</view>
 				</view>
 			</view>
@@ -33,6 +33,7 @@
 	import UserAddTopbar from "./user-add-topbar.vue"
 	import ToastUtil from "@/common/js/util/toast-util.js"
 	import userApi from "@/api/user/info.js"
+	import wsClient from "@/common/js/util/ws-client.js"
 	export default {
 		components: {
 			UserAddTopbar
@@ -58,6 +59,21 @@
 				}
 				const res = await userApi.searchUser(param)
 				this.userList = res
+			},
+			//发送请求
+			addRequest(userId) {
+				
+				let messageObj = {
+					statusCode: 201,
+					singleRelationReq: {
+						targetId: userId,
+						createdTime: new Date(),
+					}
+				}
+				let str = JSON.stringify(messageObj)
+				//实时消息发送
+				wsClient.send(str)
+				
 			}
 		},
 		onReachBottom() {
@@ -125,6 +141,9 @@
 							border: 1px solid #999999;
 							padding: 5rpx 15rpx;
 							border-radius: 5rpx;
+							&:active {
+								background-color: #dee2e2;
+							}
 						}
 					}
 				}
