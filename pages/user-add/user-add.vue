@@ -22,7 +22,14 @@
 						</view>
 					</view>
 					<view class="action">
-						<view class="add-btn" @click="addRequest(item.id)">添加</view>
+						<text v-if="getAddReqByuserId(item.id).status == 0">待验证</text>
+						<!-- 只要请求list中不存在 或者 状态是拒绝的，才可以添加 （如果状态拒绝，则添加其实是更新操作） -->
+						<template v-else-if="getAddReqByuserId(item.id) == false || getAddReqByuserId(item.id).status == 2">
+							<u-button plain size="mini"  @click="addRequest(item.id)">
+								<u-loading mode="flower" v-if="btnLoading && nowClickId == item.id"></u-loading>
+								<text v-else>添加</text>
+							</u-button>
+						</template>
 					</view>
 				</view>
 			</view>
@@ -34,16 +41,38 @@
 	import ToastUtil from "@/common/js/util/toast-util.js"
 	import userApi from "@/api/user/info.js"
 	import wsClient from "@/common/js/util/ws-client.js"
+	import relationReqApi from "@/api/relation/single-relation-req.js"
+	import {mapGetters} from "vuex";
+	
 	export default {
 		components: {
 			UserAddTopbar
+		},
+		computed: {
+			...mapGetters({
+				userInfo: "user/getUserInfo",
+			}),
+			getAddReqByuserId() {
+				return (id)=> {
+					let index = this.isAddList.findIndex(e => e.targetId == id)
+					//说明不存在
+					if(index < 0) {
+						return false
+					}
+					let obj =  this.isAddList[index]
+					return obj
+				}
+			}
 		},
 		data() {
 			return {
 				searchVal: "",
 				current: 1,
 				size: 30,
-				userList: []
+				userList: [],
+				nowClickId: "", //当前点击的用户id
+				btnLoading: false,
+				isAddList: "" //已经发送出去的列表
 			}
 		},
 		methods: {
@@ -61,25 +90,51 @@
 				this.userList = res
 			},
 			//发送请求
-			addRequest(userId) {
+			async addRequest(userId) {
+				this.btnLoading = true
+				this.nowClickId = userId
 				
-				let messageObj = {
-					statusCode: 201,
-					singleRelationReq: {
-						targetId: userId,
-						createdTime: new Date(),
-					}
+				//用于http请求的参数
+				let param = {
+					targetId: userId,
+					status: 0
 				}
-				let str = JSON.stringify(messageObj)
-				//实时消息发送
-				wsClient.send(str)
-				
+			
+				//入库
+				try {
+					const returnId = await relationReqApi.addSingleRelationReq(param)
+					
+					//用户ws 201状态传输的参数
+					param.id = returnId
+					
+					let messageObj = {
+						statusCode: 201,
+						singleRelationReq: param
+					}
+					//对象json字符串化
+					let str = JSON.stringify(messageObj)
+					
+					//实时通讯通知目标用户
+					wsClient.send(str)
+					
+					this.btnLoading = false
+				}catch {
+					this.btnLoading = false
+				}	
 			}
+		},
+		async onLoad() {
+			let param = {
+				senderId: this.userInfo.id
+			}
+			//将已经发送出申请数据获取到，用于判断当前列表的状态
+			const res = await relationReqApi.getSingleRelation(param)
+			this.isAddList = res
 		},
 		onReachBottom() {
 			this.current+=1
 			this.getList()
-		}
+		},
 	}
 </script>
 

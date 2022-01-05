@@ -107,7 +107,7 @@
 			//消息参数
 			messageParam() {
 				let param = this.param
-				param.senderId = this.userInfo.id
+				//param.senderId = this.userInfo.id
 				param.targetId = this.targetInfo.id
 				//封装消息体
 				let messageObj = {
@@ -209,8 +209,7 @@
 				if(this.param.message) {
 					//只有文字会通过这个发送出去 文字中包含表情
 					this.param.msgType = 1
-					//添加当前时间
-					this.messageParam.chatMessage.createdTime = new Date()
+					
 					let str = JSON.stringify(this.messageParam)
 					wsClient.send(str)
 					//输入框中的内容清空

@@ -100,7 +100,6 @@ export default {
 						break;
 						//error
 					case 401:
-						console.log(options.url)
 						ToastUtil.show('请重新登录')
 						ToastUtil.hideLoading()
 						//无权限就401 触发手动关闭ws
@@ -113,6 +112,9 @@ export default {
 						break;
 					case 404:
 						ToastUtil.show('接口路径不存在')
+						break;
+					case 500:
+						reject(commonErr(response))
 						break;
 				}
 
