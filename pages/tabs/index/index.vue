@@ -57,6 +57,9 @@
 			    setRoomFlag(commit, flag) {
 			      commit("chat/SET_ROOM_FLAG", flag)
 			    },
+				addNoReadCount(commit, value) {
+			      commit("support/CHANGE_TABBAR_MESSAGE_COUNT",value)
+			    },
 				setLatelyList(commit, list) {
 			      commit("chat/SET_LATELY_LIST", list)
 			    },
@@ -69,8 +72,17 @@
 				let res = await latelyApi.getLately()
 				//res 放入vuex中
 				res.forEach(e => e.show = false)
+				//得到的最近联系人数据纳入vuex中
 				this.setLatelyList(res)
-				//this.latelyList = res
+				//得到的当前联系人所有的未阅读数量纳入vuex中
+				let allNoRead = res.map(e => e.noRead).reduce((prev, curr)=>{
+					return prev + curr;
+				})
+				
+				this.addNoReadCount({
+					key: "IndexPage",
+					count: allNoRead
+				})
 			},
 			//并不是item的点击，而是action
 			click(row, action) {

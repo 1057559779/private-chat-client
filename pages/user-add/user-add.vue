@@ -23,9 +23,9 @@
 					</view>
 					<view class="action">
 						<text v-if="getAddReqByuserId(item.id).status == 0">待验证</text>
-						<!-- 只要请求list中不存在 或者 状态是拒绝的，才可以添加 （如果状态拒绝，则添加其实是更新操作） -->
-						<template v-else-if="getAddReqByuserId(item.id) == false || getAddReqByuserId(item.id).status == 2">
-							<u-button plain size="mini"  @click="addRequest(item.id)">
+						<!-- 只要请求list中不存在才可以添加-->
+						<template v-else-if="getAddReqByuserId(item.id) == false">
+							<u-button plain size="mini"  @click.stop="addRequest(item.id)">
 								<u-loading mode="flower" v-if="btnLoading && nowClickId == item.id"></u-loading>
 								<text v-else>添加</text>
 							</u-button>
@@ -116,20 +116,25 @@
 					
 					//实时通讯通知目标用户
 					wsClient.send(str)
-					
+					//重新加载请求列表
+					await this.loadReqList()
 					this.btnLoading = false
 				}catch {
 					this.btnLoading = false
 				}	
+			},
+			//加载当前用户下的全量发送的请求
+			async loadReqList() {
+				let param = {
+					senderId: this.userInfo.id
+				}
+				//将已经发送出申请数据获取到，用于判断当前列表的状态
+				const res = await relationReqApi.getSingleRelation(param)
+				this.isAddList = res
 			}
 		},
-		async onLoad() {
-			let param = {
-				senderId: this.userInfo.id
-			}
-			//将已经发送出申请数据获取到，用于判断当前列表的状态
-			const res = await relationReqApi.getSingleRelation(param)
-			this.isAddList = res
+		onLoad() {
+			this.loadReqList()
 		},
 		onReachBottom() {
 			this.current+=1

@@ -12,7 +12,7 @@ export default {
 		//最新联系人列表（首页）
 		latelyList: [],
 		//当前最新的200状态的消息，用于其他 页面的监听
-		nowMessage: {}
+		nowMessage: {},
 	},
 	getters: {
 		//获得聊天室标识
@@ -50,7 +50,7 @@ export default {
 		//将收到的消息全放到这个属性中，用于监听
 		CHANGE_NOW_MESSAGE: (state,item) =>{
 			state.nowMessage = item
-		},
+		}
 	}
 	
 }

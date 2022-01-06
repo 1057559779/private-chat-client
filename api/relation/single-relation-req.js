@@ -11,7 +11,7 @@ export default {
 	
 	
 	/**
-	 * 好友请求创建（）
+	 * 好友请求创建
 	 */
 	async addSingleRelationReq(params) {
 		let url = '/res/single_relation_req/add'

@@ -11,7 +11,7 @@
 </template>
 
 <script>
-	import tabbarList from "@/config/base/tabbar-list.js"
+	import {mapGetters} from "vuex";
 	import IndexPage from "@/pages/tabs/index/index.vue"
 	import MyCenterPage from "@/pages/tabs/my-center/my-center.vue"
 	import Relation from "@/pages/tabs/relation/relation.vue"
@@ -25,8 +25,12 @@
 			Relation
 		},
 		computed: {
+			...mapGetters({
+				getTabbarList: "support/GET_TABBAR_LIST"
+			}),
 			//激活的tabbar页，搭配component组件 is为空的，则不挂载组件 美其名曰懒加载
 			activePageList() {
+				let tabbarList = this.getTabbarList
 				//定义一个根据tabbarList有多长数组就有多长的数组[null,null]
 				let arr = Array(tabbarList.length)
 				//如果第一个元素有值
@@ -38,7 +42,7 @@
 			},
 			//总共所有的tabbar页
 			allPageList() {
-				let arr = tabbarList
+				let arr = this.getTabbarList
 				return arr.map(e => e.name)
 			}
 		},
