@@ -14,7 +14,7 @@
 	import {mapGetters} from "vuex";
 	import IndexPage from "@/pages/tabs/index/index.vue"
 	import MyCenterPage from "@/pages/tabs/my-center/my-center.vue"
-	import Relation from "@/pages/tabs/relation/relation.vue"
+	import RelationPage from "@/pages/tabs/relation/relation.vue"
 	import MyTabbar from "@/components/my-tabbar.vue"
 	import {mapMutations,mapState} from "vuex"
 	export default {
@@ -22,7 +22,7 @@
 			MyTabbar,
 			IndexPage,
 			MyCenterPage,
-			Relation
+			RelationPage
 		},
 		computed: {
 			...mapGetters({

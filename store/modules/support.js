@@ -17,7 +17,7 @@ export default {
 				},
 				{
 					title: "联系人",
-					name: "Relation",
+					name: "RelationPage",
 					iconPath: "/static/tabbar/relation.png",
 					count: 0,
 					selectedIconPath:"/static/tabbar/relation-active.png",

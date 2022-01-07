@@ -69,6 +69,7 @@
 				//websocket 客户端开始连接
 				wsClient.open( async ()=>{
 					await this.getLatelyList()
+					await this.getSingleReqCount()
 					//接受消息
 					this.receiveMessage()
 				});
@@ -171,7 +172,11 @@
 				  targetId: this.userInfo.id
 			  }	
 			  const res = await singleRelationReqApi.getSingleRelationCountByTargets(param)
-			  console.log(res)
+			  //设置Tabbar的红点
+			  this.setNoReadCount({
+			  	key: "RelationPage",
+			  	count: res
+			  })
 			},
 		
 			//加载最新联系人
@@ -182,9 +187,14 @@
 				//得到的最近联系人数据纳入vuex中
 				this.setLatelyList(res)
 				//得到的当前联系人所有的未阅读数量纳入vuex中
-				let allNoRead = res.map(e => e.noRead).reduce((prev, curr)=>{
-					return prev + curr;
-				})
+				let allNoRead = 0
+				let noReadArr = res.map(e => e.noRead)
+				//计算 未阅读数量数组
+				if(noReadArr.length > 0) {
+					noReadArr.reduce((prev, curr)=>{
+						return prev + curr;
+					})
+				}
 				
 				this.setNoReadCount({
 					key: "IndexPage",
