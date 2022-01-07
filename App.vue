@@ -58,9 +58,9 @@
 				setLatelyList(commit,list) {
 			      commit("chat/SET_LATELY_LIST",list)
 			    },
-				//添加未阅读数量
-				addNoReadCount(commit, value) {
-				  commit("support/CHANGE_TABBAR_MESSAGE_COUNT",value)
+				//设置未阅读数量
+				setNoReadCount(commit, value) {
+				  commit("support/SET_TABBAR_MESSAGE_COUNT",value)
 				},
 			}),
 			//初始化，ws与基础数据
@@ -170,7 +170,7 @@
 			  let param = {
 				  targetId: this.userInfo.id
 			  }	
-			  const res = await singleRelationReqApi.getSingleRelationCount(param)
+			  const res = await singleRelationReqApi.getSingleRelationCountByTargets(param)
 			  console.log(res)
 			},
 		
@@ -186,7 +186,7 @@
 					return prev + curr;
 				})
 				
-				this.addNoReadCount({
+				this.setNoReadCount({
 					key: "IndexPage",
 					count: allNoRead
 				})

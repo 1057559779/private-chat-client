@@ -4,16 +4,16 @@ export default {
 	/**
 	 * 好友请求查询
 	 */
-	async getSingleRelation(params) {
-		let url = '/res/single_relation_req/search'
+	async getSingleRelationBySender(params) {
+		let url = '/res/single_relation_req/search_by_sender'
 		return await http.get(url, params|| {})
 	},
 	
 	/**
 	 * 好友请求数量
 	 */
-	async getSingleRelationCount(params) {
-		let url = '/res/single_relation_req/count'
+	async getSingleRelationCountByTargets(params) {
+		let url = '/res/single_relation_req/count_by_targets'
 		return await http.get(url, params|| {})
 	},
 	

@@ -129,7 +129,7 @@
 					senderId: this.userInfo.id
 				}
 				//将已经发送出申请数据获取到，用于判断当前列表的状态
-				const res = await relationReqApi.getSingleRelation(param)
+				const res = await relationReqApi.getSingleRelationBySender(param)
 				this.isAddList = res
 			}
 		},
