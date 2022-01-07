@@ -5,6 +5,7 @@
 	import messagePush from "@/config/push"
 	import latelyApi from "@/api/chat/lately.js"
 	import userInfoApi from "@/api/user/info.js"
+	import singleRelationReqApi from "@/api/relation/single-relation-req.js"
 	export default {
 		onLaunch: function() {
 			//ios下 切出应用就会断连 所以连接建立放在onShow中
@@ -34,14 +35,6 @@
 				roomFlag: "chat/getRoomFlag",
 				userInfo: "user/getUserInfo"
 			}),
-			latelyListComp: {
-				get() {
-					return this.latelyList
-				},
-				set(list) {
-					this.setLatelyList(list)
-				}
-			}
 		},
 		methods:{
 			...mapMutations({
@@ -57,13 +50,57 @@
 				setRoomFlag(commit,flag) {
 			      commit("chat/SET_ROOM_FLAG",flag)
 			    },
+				//消息变化监听
 				changeNowMessage(commit,item) {
 			      commit("chat/CHANGE_NOW_MESSAGE",item)
 			    },
+				//添加最近联系人列表
 				setLatelyList(commit,list) {
 			      commit("chat/SET_LATELY_LIST",list)
 			    },
+				//添加未阅读数量
+				addNoReadCount(commit, value) {
+				  commit("support/CHANGE_TABBAR_MESSAGE_COUNT",value)
+				},
 			}),
+			//初始化，ws与基础数据
+			init(){
+				
+				//websocket 客户端开始连接
+				wsClient.open( async ()=>{
+					await this.getLatelyList()
+					//接受消息
+					this.receiveMessage()
+				});
+			},
+			//ws消息接受监听
+			receiveMessage() {
+				wsClient.receiveMessage((res)=>{
+					let obj = JSON.parse(res)
+				
+					//说明是无权限的
+					if(obj.statusCode === 401) {
+						ToastUtil.show(obj.content)
+						// 删除一些用户标识
+						this.removeUserInfo()
+						this.removeToken()
+						
+						uni.reLaunch({
+							url: "/pages/login/login"
+						})
+					}
+					
+					if(obj.statusCode === 200) {
+						let message = obj.chatMessage
+						//更改最新的消息，告诉其他页面新消息来了
+						this.changeNowMessage(obj)
+						if(message.targetType === 1) {
+							this.handleSingle(message)
+						}
+					}
+				})
+			},
+			//点对点消息接受处理函数
 			async handleSingle(message) {
 				//得到所有符合条件的联系人的id
 				let ids = this.latelyList.filter(e => {
@@ -128,42 +165,44 @@
 				
 				
 			},
-			init(){
-				//websocket 客户端开始连接
-				wsClient.open();
-				
-				wsClient.receiveMessage((res)=>{
-					let obj = JSON.parse(res)
-				
-					//说明是无权限的
-					if(obj.statusCode === 401) {
-						ToastUtil.show(obj.content)
-						// 删除一些用户标识
-						this.removeUserInfo()
-						this.removeToken()
-						
-						uni.reLaunch({
-							url: "/pages/login/login"
-						})
-					}
-					
-					if(obj.statusCode === 200) {
-						let message = obj.chatMessage
-						//更改最新的消息，告诉其他页面新消息来了
-						this.changeNowMessage(obj)
-						if(message.targetType === 1) {
-							this.handleSingle(message)
-						}
-					}
+			//获得别人向登录者发来的好友请求数量
+			async getSingleReqCount() {
+			  let param = {
+				  targetId: this.userInfo.id
+			  }	
+			  const res = await singleRelationReqApi.getSingleRelationCount(param)
+			  console.log(res)
+			},
+		
+			//加载最新联系人
+			async getLatelyList() {
+				let res = await latelyApi.getLately()
+				//res 放入vuex中
+				res.forEach(e => e.show = false)
+				//得到的最近联系人数据纳入vuex中
+				this.setLatelyList(res)
+				//得到的当前联系人所有的未阅读数量纳入vuex中
+				let allNoRead = res.map(e => e.noRead).reduce((prev, curr)=>{
+					return prev + curr;
 				})
-			}
+				
+				this.addNoReadCount({
+					key: "IndexPage",
+					count: allNoRead
+				})
+			},
+			
 		},
 		watch: {
 			token(v) {
 				//当token不存在当时候 手动关闭ws服务
 				if(!v) {
-					console.log(v)
 					wsClient.close()
+				}
+				//不然说明是登录进来的
+				else if(v){
+					//websocket 客户端开始连接 login也属于app.vue的子页，所以login登录后需要app页面watch一下
+					this.init()
 				}
 			}
 		},

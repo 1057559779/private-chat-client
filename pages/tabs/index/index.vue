@@ -21,7 +21,6 @@
 	//封装页面	
 	import IndexTopBar from "./index-topbar.vue";
 	import {mapMutations,mapGetters,mapState} from "vuex"
-	import store from "@/store/index.js"
 	import latelyApi from "@/api/chat/lately.js";
 	import UserItem from "./user-item.vue";
 	import GroupItem from "./group-item.vue";
@@ -67,22 +66,6 @@
 			//当页面拉动到底部到时候，回调
 			reachBottom() {
 				console.log("hi")
-			},
-			async getLatelyList() {
-				let res = await latelyApi.getLately()
-				//res 放入vuex中
-				res.forEach(e => e.show = false)
-				//得到的最近联系人数据纳入vuex中
-				this.setLatelyList(res)
-				//得到的当前联系人所有的未阅读数量纳入vuex中
-				let allNoRead = res.map(e => e.noRead).reduce((prev, curr)=>{
-					return prev + curr;
-				})
-				
-				this.addNoReadCount({
-					key: "IndexPage",
-					count: allNoRead
-				})
 			},
 			//并不是item的点击，而是action
 			click(row, action) {
@@ -130,18 +113,6 @@
 					})
 				}
 			},
-			loadData() {
-				this.getLatelyList()
-			}
-		},
-		mounted() {
-			this.loadData()
-		},
-		watch:{
-			//single 触发onShow 监听onShow 然后继续触发
-			onShowFlag() {
-				this.loadData()
-			}
 		}
 	}
 </script>

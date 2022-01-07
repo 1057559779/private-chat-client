@@ -9,6 +9,13 @@ export default {
 		return await http.get(url, params|| {})
 	},
 	
+	/**
+	 * 好友请求数量
+	 */
+	async getSingleRelationCount(params) {
+		let url = '/res/single_relation_req/count'
+		return await http.get(url, params|| {})
+	},
 	
 	/**
 	 * 好友请求创建

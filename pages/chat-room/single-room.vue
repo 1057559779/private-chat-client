@@ -126,6 +126,9 @@
 			
 			let targetInfo = param.target_info
 			this.targetInfo = JSON.parse(targetInfo)
+			
+		},
+		async onShow() {
 			this.messageList = []
 			
 			//获得最新的十条记录 后续新记录则unshift到头部

@@ -29,7 +29,6 @@
 	import {mapMutations,mapGetters} from "vuex"
 	import configInfo from "@/config/base/config-info.js"
 	import CryptoJS from 'crypto-js';
-	import wsClient from "@/common/js/util/ws-client.js"
 	import ToastUtil from "@/common/js/util/toast-util.js"
 	
 	export default {
@@ -64,8 +63,7 @@
 				if (res.access_token) {
 					this.setToken(res.access_token)
 					await this.getUserInfo()
-					//开启ws服务
-					wsClient.open()
+					
 					ToastUtil.hideLoading()
 					uni.reLaunch({
 						url: "/pages/tabs/single/single"

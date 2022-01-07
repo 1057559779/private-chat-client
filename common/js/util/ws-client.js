@@ -7,10 +7,9 @@ import store from "@/store/index.js"
 const wsClient = {
 	
 	//开启连接	
-	open() {		
+	open(callback) {		
 		let token = store.getters['user/getToken']
-		let userInfo = store.getters['user/getUserInfo']
-		if(token && userInfo) {
+		if(token) {
 			console.log("正在连接")
 			ToastUtil.showLoading("正在连接")
 			//存在token才让他连接
@@ -21,6 +20,9 @@ const wsClient = {
 					wsClient.onError()
 					//调用关闭监听事件
 					wsClient.onClose()
+					
+					//当连接创建时，加载一些数据
+					callback()
 			    }
 			});
 		}else {
