@@ -18,4 +18,14 @@ export default {
 		let url = '/res/user/search_user'
 		return await http.get(url,param)
 	},
+	
+	
+	/**
+	 * 根据id 获得更加详细的用户信息
+	 * @param {Object} userId
+	 */
+	async getUserDetailInfoById(userId) {
+		let url = '/res/user/get_user_detail_by_id'
+		return await http.get(url,{userId: userId})
+	},
 }

@@ -104,12 +104,10 @@
 					//设置flag同时 noRead清空  静态的
 					this.setRoomFlag(param)
 					
-					//为了节省传输大小，selfComment不传递过去了
-					delete item.targetUserInfo['selfComment']
-					let targetInfo = JSON.stringify(item.targetUserInfo)
+					let userId = item.targetUserInfo.id
 					
 					uni.navigateTo({
-						url: `/pages/chat-room/single-room?target_info=${targetInfo}`
+						url: `/pages/chat-room/single-room?userId=${userId}`
 					})
 				}
 				//类型2 多对多

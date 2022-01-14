@@ -55,15 +55,15 @@
 	import SingleRoomTopbar from "./topbar/single-room-topbar.vue";
 	import messageApi from "@/api/chat/message.js";
 	import latelyApi from "@/api/chat/lately.js";
-	import wsClient from "@/common/js/util/ws-client.js"
-	
+	import wsClient from "@/common/js/util/ws-client.js";
+	import userApi from "@/api/user/info.js";
 	export default {
 		components: {
 			SingleRoomTopbar
 		},
 		data() {
 			return {
-				targetInfo: null, //聊天室目标对象
+				targetInfo: {}, //聊天室目标对象
 				height: 0,
 				scrollTop: 0,
 				old: {
@@ -117,19 +117,21 @@
 				return messageObj
 			},
 		},
-		async onLoad(param) {
+		onLoad(param) {
 			//软键盘升起降落的时候，软键盘高度监控
 			uni.onKeyboardHeightChange(res =>{
 			    //获取键盘高度
 				this.height = res.height
 			})
-			
-			let targetInfo = param.target_info
-			this.targetInfo = JSON.parse(targetInfo)
-			
+			this.targetInfo.id = param.userId
+
 		},
 		async onShow() {
 			this.messageList = []
+			
+			let userInfo = await userApi.getUserInfoById(this.targetInfo.id)
+			
+			this.targetInfo = userInfo
 			
 			//获得最新的十条记录 后续新记录则unshift到头部
 			await this.getMessageList()

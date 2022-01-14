@@ -5,7 +5,7 @@
 		</view>
 		<view class="user-add-box">
 			<view class="user-list">
-				<view class="user-item" v-for="(item,index) in userList" :key="index">
+				<view class="user-item" v-for="(item,index) in userList" :key="index" @click="goDetail(item)">
 					<u-avatar :size="100" class="item-avatar" 
 					:src="item.avatar" mode="square"></u-avatar>
 					<view class="content">
@@ -68,9 +68,13 @@
 					return
 				}
 				ToastUtil.show("查询结果为空")
-				
 			},
-			
+			goDetail(item) {
+				let id = item.id
+				uni.navigateTo({
+					url: `/pages/user-detail/user-detail?userId=${id}`
+				})
+			}
 		},
 		onReachBottom() {
 			this.current+=1
