@@ -62,6 +62,10 @@
 				setNoReadCount(commit, value) {
 				  commit("support/SET_TABBAR_MESSAGE_COUNT",value)
 				},
+				//更改未阅读数量
+				changeNoReadCount(commit, value) {
+				  commit("support/CHANGE_TABBAR_MESSAGE_COUNT",value)
+				},
 			}),
 			//初始化，ws与基础数据
 			init(){
@@ -123,6 +127,11 @@
 					}else {
 						//没有room标识
 						this.latelyList[index].noRead +=1
+						//设置首页tabbar的值 未读+1
+						this.changeNoReadCount({
+							key: "IndexPage",
+							count: 1
+						})
 					}
 					
 					this.latelyList[index].message = message.message
@@ -191,7 +200,7 @@
 				let noReadArr = res.map(e => e.noRead)
 				//计算 未阅读数量数组
 				if(noReadArr.length > 0) {
-					noReadArr.reduce((prev, curr)=>{
+					allNoRead = noReadArr.reduce((prev, curr)=>{
 						return prev + curr;
 					})
 				}

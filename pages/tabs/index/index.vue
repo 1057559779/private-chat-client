@@ -56,7 +56,7 @@
 			    setRoomFlag(commit, flag) {
 			      commit("chat/SET_ROOM_FLAG", flag)
 			    },
-				addNoReadCount(commit, value) {
+				changeNoReadCount(commit, value) {
 			      commit("support/CHANGE_TABBAR_MESSAGE_COUNT",value)
 			    },
 				setLatelyList(commit, list) {
@@ -93,14 +93,21 @@
 						type: type,
 						targetId: item.targetUserInfo['id']
 					}
-					//这个接口中，同时会清空noRead
-					await latelyApi.setRoomFlag(param)
 					
+					//根据item的未读数量 减去相应tabbar的未读数量
+					this.changeNoReadCount({
+						key: "IndexPage",
+						count: -item.noRead
+					})
+					//这个接口中，同时会清空noRead  库中
+					await latelyApi.setRoomFlag(param)
+					//设置flag同时 noRead清空  静态的
 					this.setRoomFlag(param)
 					
 					//为了节省传输大小，selfComment不传递过去了
 					delete item.targetUserInfo['selfComment']
 					let targetInfo = JSON.stringify(item.targetUserInfo)
+					
 					uni.navigateTo({
 						url: `/pages/chat-room/single-room?target_info=${targetInfo}`
 					})

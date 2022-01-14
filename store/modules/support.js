@@ -49,6 +49,13 @@ export default {
 			state.tabbarList[index].count = valObj.count
 			
 		},
+		//全量未读消息的更改
+		CHANGE_TABBAR_MESSAGE_COUNT: (state,valObj) =>{
+			//根据name的值找到具体的tab
+			let index = state.tabbarList.findIndex(e =>e.name == valObj.key)
+			state.tabbarList[index].count += valObj.count
+			
+		},
 	}
 	
 }

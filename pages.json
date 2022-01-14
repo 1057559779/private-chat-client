@@ -89,6 +89,19 @@
             }
             
         }
+        ,{
+            "path" : "pages/user-detail/user-detail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"app-plus":{
+					"titleNView": false,
+					"bounce":"none"
+				}
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
