@@ -6,6 +6,7 @@
 	import latelyApi from "@/api/chat/lately.js"
 	import userInfoApi from "@/api/user/info.js"
 	import singleRelationReqApi from "@/api/relation/single-relation-req.js"
+	import relationApi from "@/api/relation/single-relation.js"
 	export default {
 		onLaunch: function() {
 			//ios下 切出应用就会断连 所以连接建立放在onShow中
@@ -66,6 +67,10 @@
 				changeNoReadCount(commit, value) {
 				  commit("support/CHANGE_TABBAR_MESSAGE_COUNT",value)
 				},
+				//设置好友列表
+				setRelationList(commit,list) {
+			      commit("relation/SET_RELATION_LIST",list)
+			    },
 			}),
 			//初始化，ws与基础数据
 			init(){
@@ -74,6 +79,7 @@
 				wsClient.open( async ()=>{
 					await this.getLatelyList()
 					await this.getSingleReqCount()
+					await this.getRelationList()
 					//接受消息
 					this.receiveMessage()
 				});
@@ -107,9 +113,10 @@
 			},
 			//点对点消息接受处理函数
 			async handleSingle(message) {
+				
 				//得到所有符合条件的联系人的id
 				let ids = this.latelyList.filter(e => {
-					if(e.targetId === message.senderId || e.targetId === message.targetId) {
+					if(e.targetId == message.senderId || e.targetId == message.targetId) {
 						return true;
 					}
 				}).map(i => i.targetId)
@@ -150,7 +157,7 @@
 		
 				})
 				//说明消息有，但是不存在最近联系人
-				if(ids.length === 0) {
+				if(ids.length == 0) {
 					let targetId = null
 					if(message.senderId !== this.userInfo.id) {
 						targetId = message.senderId
@@ -159,21 +166,36 @@
 					}
 					//拿到用户信息
 					const userInfo = await userInfoApi.getUserInfoById(targetId)
+					let noRead = 0 
+					
+					//数据更新 有room标识
+					if(this.roomFlag && this.roomFlag.targetId) {
+						//说明没在当前聊天室中，noRead数量不需要增加
+						if(this.roomFlag.targetId !== targetId) {
+							noRead=1
+						}
+					}else {
+						//没有room标识
+						noRead = 1
+						//设置首页tabbar的值 未读+1
+						this.changeNoReadCount({
+							key: "IndexPage",
+							count: 1
+						})
+					}
+					
 					//拼装联系人对象
 					let obj = {
-						show: false,
 						type: 1,
 						id: this.$getUUID(),//生成uuid
 						message: message.message,
-						noRead: 1,
+						noRead: noRead,
 						targetId : targetId,
 						updateTime: message.createdTime,
 						targetUserInfo: userInfo
 					}
-					this.latelyList.push(obj)
+					this.latelyList.unshift(obj)
 				}
-				
-				
 			},
 			//获得别人向登录者发来的好友请求数量
 			async getSingleReqCount() {
@@ -191,8 +213,7 @@
 			//加载最新联系人
 			async getLatelyList() {
 				let res = await latelyApi.getLately()
-				//res 放入vuex中
-				res.forEach(e => e.show = false)
+			
 				//得到的最近联系人数据纳入vuex中
 				this.setLatelyList(res)
 				//得到的当前联系人所有的未阅读数量纳入vuex中
@@ -204,12 +225,16 @@
 						return prev + curr;
 					})
 				}
-				
 				this.setNoReadCount({
 					key: "IndexPage",
 					count: allNoRead
 				})
 			},
+			//加载好友列表，全量无分页
+			async getRelationList() {
+				let res = await relationApi.getSingleRelationList()
+				this.setRelationList(res)
+			}
 			
 		},
 		watch: {

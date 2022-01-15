@@ -4,12 +4,12 @@
 export default {
 	namespaced: true,
 	state: {
-		singleRelationCountByTargets: 0, //好友请求的数量
+		relationList: []//好友列表
 	},
 	mutations: {
-		//登录者收到的好友请求数量
-		SET_SINGLE_RELATION_COUNT_BY_TARGETS: (state,count) =>{
-			state.singleRelationCountByTargets = count
+		//设置好友列表
+		SET_RELATION_LIST: (state,list) =>{
+			state.relationList = list
 		},
 	}
 	

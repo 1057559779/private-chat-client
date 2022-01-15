@@ -5,13 +5,10 @@
 		</view>
 		<scroll-view :scroll-y="true" @scrolltolower="reachBottom" class="index-box">
 			<view class="lately-list">
-					<u-swipe-action :show="item.show" :index="item.targetId" 
-						v-for="(item, index) in latelyList" :key="item.targetId" 
-						@click="click" @open="(index)=>open(index,item.targetId)"
-						:options="options">
+					<view v-for="(item, index) in latelyList" :key="item.targetId" >
 						<UserItem @click="openChatRoom(item)" :item="item" v-if="item.type === 1"></UserItem>
 						<GroupItem @click="openChatRoom(item)" :item="item" v-if="item.type === 2"></GroupItem>
-					</u-swipe-action>
+					</view>
 			</view>
 		</scroll-view>
 	</view>
@@ -41,14 +38,7 @@
 		},
 		data() {
 			return {
-				options: [
-					{
-						text: '删除',
-						style: {
-							backgroundColor: '#dd524d'
-						}
-					}
-				]
+				
 			}
 		},
 		methods: {
@@ -67,31 +57,16 @@
 			reachBottom() {
 				console.log("hi")
 			},
-			//并不是item的点击，而是action
-			click(row, action) {
-				console.log(action)
-			},
-			// 如果打开一个的时候，不需要关闭其他，则无需实现本方法
-			open(index,id) {
-				let indexReal = this.latelyList.findIndex(e => e.targetId === id)
-				// 先将正在被操作的swipeAction标记为打开状态，否则由于props的特性限制，
-				// 原本为'false'，再次设置为'false'会无效
-				this.latelyList[indexReal].show = true
-			
-				this.latelyList.map((val, idx) => {
-					if(indexReal != idx) this.latelyList[idx].show = false;
-				})
-			},
 			//打开聊天室
 			async openChatRoom(item) {
 				
 				let type = item.type
 				//类型1 点对点
 				if(type === 1) {
-					
+					let userId = item.targetUserInfo.id
 					let param = {
 						type: type,
-						targetId: item.targetUserInfo['id']
+						targetId: userId
 					}
 					
 					//根据item的未读数量 减去相应tabbar的未读数量
@@ -104,7 +79,7 @@
 					//设置flag同时 noRead清空  静态的
 					this.setRoomFlag(param)
 					
-					let userId = item.targetUserInfo.id
+					
 					
 					uni.navigateTo({
 						url: `/pages/chat-room/single-room?userId=${userId}`

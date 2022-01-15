@@ -25,21 +25,21 @@
 </template>
 
 <script>
+	import {mapGetters,mapMutations,mapState} from "vuex"
 	import relationApi from "@/api/relation/single-relation.js"
 	export default {
+		computed:{
+			...mapState({
+			    relationList: (state) => state.relation.relationList,
+			}),
+		},
 		data() {
 			return {
-				relationList: []
+				
 			}
 		},
 		methods: {
-			async getRelationList() {
-				let res = await relationApi.getSingleRelationList()
-				this.relationList = res
-			},
-			loadData() {
-				this.getRelationList()
-			}
+			
 		}
 	}
 </script>

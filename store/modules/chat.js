@@ -40,8 +40,10 @@ export default {
 			state.roomFlag = flag
 			//得到符合条件的那个index
 			let index = state.latelyList.findIndex(e => e.targetId === flag.targetId)
-			//该联系人未读数量清零
-			state.latelyList[index].noRead = 0
+			if(index > -1) {
+				//该联系人未读数量清零
+				state.latelyList[index].noRead = 0
+			}
 		},
 		//将整个最新联系人list 存入
 		SET_LATELY_LIST: (state,list) =>{

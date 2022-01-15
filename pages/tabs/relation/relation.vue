@@ -74,7 +74,7 @@
 				
 			},
 			loadData() {
-				this.$refs.singleRelation.loadData()
+				//this.$refs.singleRelation.loadData()
 			}
 		},
 		mounted() {

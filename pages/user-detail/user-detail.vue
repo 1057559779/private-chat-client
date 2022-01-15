@@ -7,11 +7,21 @@
 			</view>
 			<view class="bottom-box" v-if="userDetail">
 				<!-- existSingleRelation == true 待验证 -->
-				<view class="simple-btn" >
+				<view class="simple-btn disable" v-if="userDetail.existSingleRelation == true">
 					待验证
 				</view>
 				<!-- existSingleRelation false && friendList 不存在该人 需要加好友 -->
+				<view class="simple-btn" 
+					v-else-if="userDetail.existSingleRelation == false 
+						&& relationList.findIndex(e => e.targetId == userDetail.id ) < 0">
+					加好友
+				</view>
 				<!-- 剩余情况 可以发消息 -->
+				<view class="simple-btn"
+					@click="goSingleRoom(userDetail.id)"
+					v-else-if="relationList.findIndex(e => e.targetId == userDetail.id ) > -1">
+					发消息
+				</view>
 			</view>
 		</view>
 	</view>
@@ -20,9 +30,19 @@
 <script>
 	import UserDetailTopbar from "./user-detail-topbar.vue"
 	import userApi from "@/api/user/info.js"
+	import latelyApi from "@/api/chat/lately.js";
+	import {mapGetters,mapMutations,mapState} from "vuex"
 	export default {
 		components: {
 			UserDetailTopbar
+		},
+		computed:{
+			...mapState({
+				//好友列表
+			    relationList: (state) => state.relation.relationList,
+				//最近联系人列表，为了得到未阅读数量
+				latelyList: (state) => state.chat.latelyList,
+			}),
 		},
 		data() {
 			return {
@@ -36,6 +56,14 @@
 			this.getUserDetail(userId)
 		},
 		methods: {
+			...mapMutations({
+			    setRoomFlag(commit, flag) {
+			      commit("chat/SET_ROOM_FLAG", flag)
+			    },
+				changeNoReadCount(commit, value) {
+			      commit("support/CHANGE_TABBAR_MESSAGE_COUNT",value)
+			    },
+			}),
 			//发送请求
 			async addRequest(userId) {
 				this.btnLoading = true
@@ -68,12 +96,40 @@
 					this.btnLoading = false
 				}	
 			},
+			//获得用户详情
 			async getUserDetail(userId) {
 				const userDetail = await userApi.getUserDetailInfoById(userId)
 				this.userDetail = userDetail
 			},
 			back() {
 				uni.navigateBack()
+			},
+			//前往目标用户的聊天室
+			async goSingleRoom(targetId) {
+				let noRead = 0
+				let targetIndex = this.latelyList.findIndex(e => e.targetId == targetId)
+				//说明最近联系人存在这个用户
+				if(targetIndex > -1) {
+					noRead = this.latelyList[targetIndex].noRead
+					//根据item的未读数量 减去相应tabbar的未读数量
+					this.changeNoReadCount({
+						key: "IndexPage",
+						count: -noRead
+					})
+				}
+				let param = {
+					type: 1,
+					targetId: targetId
+				}
+				
+				//这个接口中，同时会清空noRead  库中
+				await latelyApi.setRoomFlag(param)
+				//设置flag同时 noRead清空  静态的
+				this.setRoomFlag(param)
+				
+				uni.navigateTo({
+					url: `/pages/chat-room/single-room?userId=${targetId}`
+				})
 			}
 		}
 	}
@@ -106,6 +162,9 @@
 				text-align: center;
 				background-color: $global-primary;
 				color: #ffffff;
+				&.disable {
+					background-color: lighten($global-primary, 40%);
+				}
 			}
 			
 		}
