@@ -126,7 +126,7 @@
 			this.targetInfo.id = param.userId
 
 		},
-		async onShow() {
+		async onReady() {
 			this.messageList = []
 			
 			let userInfo = await userApi.getUserInfoById(this.targetInfo.id)

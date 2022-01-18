@@ -7,7 +7,8 @@
 			</view>
 			<view class="bottom-box" v-if="userDetail">
 				<!-- existSingleRelation == true 待验证 -->
-				<view class="simple-btn disable" v-if="userDetail.existSingleRelation == true">
+				<view class="simple-btn disable" v-if="userDetail.existSingleRelation == true
+						&& relationList.findIndex(e => e.targetId == userDetail.id ) < 0">
 					待验证
 				</view>
 				<!-- existSingleRelation false && friendList 不存在该人 需要加好友 -->
