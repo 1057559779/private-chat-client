@@ -33,9 +33,15 @@ export default {
 	},
 	getters: {
 		//获得tabbar
-		GET_TABBAR_LIST(state) {
+		getTabbarList(state) {
 			return state.tabbarList
 		},
+		//获得好友关联请求的数量
+		getRelationReqCount(state) {
+			let index = state.tabbarList.findIndex(e =>e.name == "RelationPage")
+			let count = state.tabbarList[index].count
+			return count || 0
+		}
 	},
 	mutations: {
 		//移除聊天室标识

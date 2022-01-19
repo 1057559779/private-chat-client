@@ -38,7 +38,7 @@
 		},
 		computed: {
 			...mapGetters({
-				getTabbarList: "support/GET_TABBAR_LIST"
+				getTabbarList: "support/getTabbarList"
 			})
 		},
 		methods: {
@@ -87,17 +87,7 @@
 							top: 0;
 							right: 0;
 							transform: translate(100%,-50%);
-							display: flex;
-							height: 32rpx;
-							min-width: 32rpx;
-							font-size: 22rpx;
-							font-weight: bold;
-							justify-content: center;
-							color: #ffffff;
-							align-items: center;
-							padding: 2rpx 4rpx;
-							border-radius: 100rpx;
-							background-color: #f56c6c;
+							@include no-read-css;
 						}
 					}
 					.image-area {

@@ -26,7 +26,7 @@
 		},
 		computed: {
 			...mapGetters({
-				getTabbarList: "support/GET_TABBAR_LIST"
+				getTabbarList: "support/getTabbarList"
 			}),
 			//激活的tabbar页，搭配component组件 is为空的，则不挂载组件 美其名曰懒加载
 			activePageList() {

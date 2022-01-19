@@ -238,7 +238,8 @@
 			
 		},
 		watch: {
-			token(v) {
+			//不能取token 因为token是先userinfo设置的，所以监听会错过userinfo的变化，导致参数不准确
+			userInfo(v) {
 				//当token不存在当时候 手动关闭ws服务
 				if(!v) {
 					wsClient.close()

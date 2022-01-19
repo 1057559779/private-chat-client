@@ -2,7 +2,10 @@
 	<scroll-view scroll-y class="single-relation">
 		<view class="new-request">
 			<view class="request-item">
-				好友请求
+				<view class="req-title">好友请求</view>
+				<view class="req-count" v-if="getRelationReqCount > 0">
+					{{getRelationReqCount>99?"99+":getRelationReqCount}}
+				</view>
 			</view>
 		</view>
 		<view class="relation-list">
@@ -32,6 +35,9 @@
 			...mapState({
 			    relationList: (state) => state.relation.relationList,
 			}),
+			...mapGetters({
+				getRelationReqCount: "support/getRelationReqCount",
+			})
 		},
 		data() {
 			return {
@@ -56,6 +62,14 @@
 			.request-item {
 				padding: 25rpx;
 				background-color: #ffffff;
+				display: flex;
+				justify-content: space-between;
+				.req-title {
+					
+				}
+				.req-count {
+					@include no-read-css;
+				}
 			}
 			padding-bottom: 20rpx;
 			background-color: #edf2f1;

@@ -75,17 +75,7 @@
 					white-space: nowrap;
 				}
 				.no-read {
-					display: flex;
-					height: 32rpx;
-					min-width: 32rpx;
-					font-size: 22rpx;
-					font-weight: bold;
-					justify-content: center;
-					color: #ffffff;
-					align-items: center;
-					padding: 2rpx 4rpx;
-					border-radius: 100rpx;
-					background-color: #f56c6c;
+					@include no-read-css;
 				}
 			}
 		}
