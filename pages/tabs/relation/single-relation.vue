@@ -6,7 +6,7 @@
 			</view>
 		</view>
 		<view class="relation-list">
-			<view class="relation-item" v-for="(item,index) in relationList" :key="index">
+			<view class="relation-item" v-for="(item,index) in relationList" :key="index" @click="goDetail(item)">
 				<u-avatar :size="100" class="item-avatar" :src="item.targetUserInfo.avatar" mode="square"></u-avatar>
 				<!-- 此层wrap在此为必写的，否则可能会出现标题定位错误 -->
 				<view class="title-wrap">
@@ -39,7 +39,12 @@
 			}
 		},
 		methods: {
-			
+			goDetail(item) {
+				let id = item.targetId
+				uni.navigateTo({
+					url: `/pages/user-detail/user-detail?userId=${id}`
+				})
+			}
 		}
 	}
 </script>

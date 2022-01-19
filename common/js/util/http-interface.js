@@ -181,26 +181,26 @@ function resultLog(res) {
 }
 
 /**
- * 接口错误统一错误处理
+ * 接口错误统一错误处理 针对于后端的Exception
  * @param {Object} result
  */
 function commonErr(result) {
-	let err_msg = "未知错误，请稍后再试"
+	let errMsg = result.data?result.data.message:"未知错误，请稍后再试"
 	if (result.hasOwnProperty("statusCode")) {
 		let statusCode = result.statusCode;
 		if (statusCode == 401) {
-			err_msg = "登录失效，请重新登录"
+			errMsg = "登录失效，请重新登录"
 		} else if (result.data.hasOwnProperty("Message")) {
 			const message = result.data.Message;
 			if (message && message[0]) {
-				err_msg = message[0]
+				errMsg = message[0]
 			}
 		}
 	} else if (result.hasOwnProperty("errMsg")) {
-		err_msg = result.errMsg
+		errMsg = result.errMsg
 	} else if (result.hasOwnProperty("Message")) {
-		err_msg = result.Message
+		errMsg = result.Message
 	}
-	ToastUtil.show(err_msg)
-	return err_msg
+	ToastUtil.show(errMsg)
+	return errMsg
 }

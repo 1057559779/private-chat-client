@@ -3,7 +3,7 @@
 		<UserDetailTopbar @back="back"></UserDetailTopbar>
 		<view class="user-detail-box safe">
 			<view class="detail-box">
-				详细内容
+				{{userDetail}}
 			</view>
 			<view class="bottom-box" v-if="userDetail">
 				<!-- existSingleRelation == true 待验证 -->
