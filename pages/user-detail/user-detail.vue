@@ -37,6 +37,7 @@
 	import relationApi from "@/api/relation/single-relation.js";
 	import {mapGetters,mapMutations,mapState} from "vuex"
 	import wsClient from "@/common/js/util/ws-client.js"
+	import ToastUtil from "@/common/js/util/toast-util.js"
 	export default {
 		components: {
 			UserDetailTopbar
@@ -68,6 +69,10 @@
 				changeNoReadCount(commit, value) {
 			      commit("support/CHANGE_TABBAR_MESSAGE_COUNT",value)
 			    },
+				//更改好友列表
+				changeRelationList(commit,item) {
+					commit("relation/CHANGE_RELATION_LIST",item)
+				}
 			}),
 			//发送请求
 			async addRequest(userId) {
@@ -106,9 +111,22 @@
 						//自己的vuex 好友列表加一套 param 其中已经有了targetId
 						let newRelation = await relationApi.getSingleRelationList(param);
 						//有targetId的情况下，得到的list只有一条数据
-						console.log(newRelation[0])
-						//实时通讯目标用户列表加一套
-						
+						if(newRelation[0] && newRelation.length == 1){
+							this.changeRelationList(newRelation[0])
+							//实时通讯目标用户列表加一套
+							let messageObj = {
+								statusCode: messageCode,
+								singleRelation: param
+							}
+							//对象json字符串化
+							let str = JSON.stringify(messageObj)
+							
+							//实时通讯通知目标用户
+							wsClient.send(str)
+						}else {
+							//进入这个地方，说明返回的数据为空或者多余一条
+							ToastUtil.show("异常操作")
+						}	
 					}
 					
 					

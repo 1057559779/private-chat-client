@@ -18,6 +18,10 @@ export default {
 		SET_RELATION_LIST: (state,list) =>{
 			state.relationList = list
 		},
+		//添加好友列表
+		CHANGE_RELATION_LIST: (state,item) =>{
+			state.relationList.push(item)
+		},
 		//将收到的201消息变化标识，用于页面监听
 		CHANGE_NOW_RELATION_REQ: (state,item) =>{
 			state.nowRelationReq = item

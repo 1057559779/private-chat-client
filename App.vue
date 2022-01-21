@@ -71,6 +71,10 @@
 				setRelationList(commit,list) {
 			      commit("relation/SET_RELATION_LIST",list)
 			    },
+				//更改好友列表
+				changeRelationList(commit,item) {
+					commit("relation/CHANGE_RELATION_LIST",item)
+				},
 				//好友请求变化监听用标识
 				changeNowRelationReq(commit,item) {
 				  commit("relation/CHANGE_NOW_RELATION_REQ",item)
@@ -122,6 +126,12 @@
 							key: "RelationPage",
 							count: 1
 						})
+					}
+					//好友关联创建完毕
+					else if(obj.statusCode === 202){
+						let singleRelation = obj.singleRelation
+						//vuex中的好友列表添加新成员
+						this.changeRelationList(singleRelation)
 					}
 				})
 			},
