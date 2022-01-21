@@ -71,13 +71,14 @@
 			    },
 			}),
 			async logOut(){
+				//退出先关闭webscoket 因为sessionMap清空用户id需要从token中获取
+				wsClient.close()
 				// 调用远程接口，删除token 如果在登出前token已经失效也会触发http拦截器中的401退出
 				await authApi.logout()
 				// 删除一些用户标识
 				this.removeUserInfo()
 				this.removeToken()
-				//退出当时候顺便关闭webscoket
-				wsClient.close()
+				
 				uni.reLaunch({
 					url: "/pages/login/login"
 				})

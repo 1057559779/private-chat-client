@@ -4,7 +4,7 @@
 export default {
 	namespaced: true,
 	state: {
-		//single单叶的 onShow标识
+		//single单页的 onShow标识
 		onShowFlag: 0,
 		//底部的tabbar
 		tabbarList: [

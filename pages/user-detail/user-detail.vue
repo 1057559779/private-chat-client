@@ -12,13 +12,14 @@
 					待验证
 				</view>
 				<!-- existSingleRelation false && friendList 不存在该人 需要加好友 -->
-				<view class="simple-btn" 
+				<view class="simple-btn click-active" 
+					@click="addRequest(userDetail.id)"
 					v-else-if="userDetail.existSingleRelation == false 
 						&& relationList.findIndex(e => e.targetId == userDetail.id ) < 0">
 					加好友
 				</view>
 				<!-- 剩余情况 可以发消息 -->
-				<view class="simple-btn"
+				<view class="simple-btn click-active"
 					@click="goSingleRoom(userDetail.id)"
 					v-else-if="relationList.findIndex(e => e.targetId == userDetail.id ) > -1">
 					发消息
@@ -32,7 +33,10 @@
 	import UserDetailTopbar from "./user-detail-topbar.vue"
 	import userApi from "@/api/user/info.js"
 	import latelyApi from "@/api/chat/lately.js";
+	import relationReqApi from "@/api/relation/single-relation-req.js";
+	import relationApi from "@/api/relation/single-relation.js";
 	import {mapGetters,mapMutations,mapState} from "vuex"
+	import wsClient from "@/common/js/util/ws-client.js"
 	export default {
 		components: {
 			UserDetailTopbar
@@ -72,25 +76,44 @@
 				//用于http请求的参数
 				let param = {
 					targetId: userId,
-					status: 0
 				}
 			
 				//入库
 				try {
-					const returnId = await relationReqApi.addSingleRelationReq(param)
+					const messageCode = await relationReqApi.addSingleRelationReq(param)
 					
-					//用户ws 201状态传输的参数
-					param.id = returnId
+					//静态的更改状态
+					this.userDetail.existSingleRelation = true
 					
-					let messageObj = {
-						statusCode: 201,
-						singleRelationReq: param
+					//201 请求添加
+					if(messageCode == 201) {
+						//用户ws 201状态传输的参数
+						param.id = this.$getUUID()
+						
+						let messageObj = {
+							statusCode: messageCode,
+							singleRelationReq: param
+						}
+						
+						//对象json字符串化
+						let str = JSON.stringify(messageObj)
+						
+						//实时通讯通知目标用户
+						wsClient.send(str)
 					}
-					//对象json字符串化
-					let str = JSON.stringify(messageObj)
+					//202 好友添加
+					else if(messageCode == 202) {
+						//自己的vuex 好友列表加一套 param 其中已经有了targetId
+						let newRelation = await relationApi.getSingleRelationList(param);
+						//有targetId的情况下，得到的list只有一条数据
+						console.log(newRelation[0])
+						//实时通讯目标用户列表加一套
+						
+					}
 					
-					//实时通讯通知目标用户
-					wsClient.send(str)
+					
+					
+					
 					
 					this.btnLoading = false
 				}catch {
@@ -167,7 +190,11 @@
 					background-color: lighten($global-primary, 40%);
 				}
 			}
-			
+			.click-active {
+				&:active {
+					background-color: darken($global-primary, 10%);
+				}
+			}
 		}
 	}
 </style>

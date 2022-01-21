@@ -51,7 +51,7 @@
 				setRoomFlag(commit,flag) {
 			      commit("chat/SET_ROOM_FLAG",flag)
 			    },
-				//消息变化监听
+				//消息变化监听用标识
 				changeNowMessage(commit,item) {
 			      commit("chat/CHANGE_NOW_MESSAGE",item)
 			    },
@@ -71,6 +71,10 @@
 				setRelationList(commit,list) {
 			      commit("relation/SET_RELATION_LIST",list)
 			    },
+				//好友请求变化监听用标识
+				changeNowRelationReq(commit,item) {
+				  commit("relation/CHANGE_NOW_RELATION_REQ",item)
+				},
 			}),
 			//初始化，ws与基础数据
 			init(){
@@ -100,14 +104,24 @@
 							url: "/pages/login/login"
 						})
 					}
-					
-					if(obj.statusCode === 200) {
+					//说明是聊天信息
+					else if(obj.statusCode === 200) {
 						let message = obj.chatMessage
 						//更改最新的消息，告诉其他页面新消息来了
 						this.changeNowMessage(obj)
 						if(message.targetType === 1) {
 							this.handleSingle(message)
 						}
+					}
+					//说明是好友请求的发送
+					else if(obj.statusCode === 201){
+						let singleRelationReq = obj.singleRelationReq
+						this.changeNowRelationReq(singleRelationReq)
+						//tabar联系人角标+1
+						this.changeNoReadCount({
+							key: "RelationPage",
+							count: 1
+						})
 					}
 				})
 			},
