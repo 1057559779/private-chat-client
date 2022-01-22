@@ -2,8 +2,34 @@
 	<view>
 		<UserDetailTopbar @back="back"></UserDetailTopbar>
 		<view class="user-detail-box safe">
-			<view class="detail-box">
-				{{userDetail}}
+			<view class="detail-box"  v-if="userDetail">
+				<!-- userDetail是后续加载出来的，所以需要v-if去判断 -->
+				<view class="base-info">
+					<view class="avatar-area">
+						<u-avatar :size="150" class="avatar-box"
+						:src="userDetail.avatar" mode="circle"></u-avatar>
+					</view>
+					<view class="info-area">
+						<view class="nick-area">
+							<view class="nick-text">{{userDetail.showName}}{{userDetail.showName}}</view>
+							<view v-if="userDetail.sex" :class="userDetail.sex == 1?'man':'woman'">
+								<u-icon :name="userDetail.sex == 1?'man':'woman'"></u-icon>
+							</view>
+						</view>
+						<view class="username-area">
+							<text class="area-title">用户名:</text>
+							{{userDetail.userName}}
+						</view>
+					</view>
+				</view>
+				<view class="generate-box">
+					<!-- 个性签名 -->
+					<view class="comment-area">
+						<u-icon name="edit-pen-fill" class="area-title"></u-icon>
+						{{userDetail.selfComment}}
+					</view>
+				</view>
+				
 			</view>
 			<view class="bottom-box" v-if="userDetail">
 				<!-- existSingleRelation == true 待验证 -->
@@ -179,6 +205,10 @@
 
 <style scoped lang="scss">
 	.user-detail-box {
+		.area-title {
+			margin-right: 10rpx;
+			color: #999999;
+		}
 		//去掉topbar
 		display: flex;
 		flex-direction: column;
@@ -195,6 +225,48 @@
 			min-height: 0;
 			background-color: $global-general;
 			flex: 1;
+			.base-info {
+				display: flex;
+				.avatar-area {
+					padding: 10rpx 25rpx;
+					.avatar-box {
+						width: 150rpx;
+						height: 150rpx;
+						border-radius: 100%;
+					}
+				}
+				.info-area {
+					padding: 20rpx 0;
+					flex: 1;
+					.nick-area {
+						font-size: 38rpx;
+						display: flex;
+						.nick-text {
+							text-overflow: ellipsis;
+							overflow: hidden;
+							white-space: nowrap;
+							max-width: 350rpx;
+						}
+						.woman {
+							color: #FF0080;
+						}
+						.man {
+							color: $global-primary;
+						}
+					}
+					.username-area {
+						font-size: 28rpx;
+					}
+				}
+			}
+			.generate-box {
+				padding: 25rpx;
+				.comment-area {
+					text-overflow: ellipsis;
+					overflow: hidden;
+					white-space: nowrap;
+				}
+			}
 		}
 		.bottom-box {
 			padding: 0 10rpx;

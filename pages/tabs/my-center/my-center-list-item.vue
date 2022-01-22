@@ -2,14 +2,14 @@
 	<view class="my-center-list-item" @click="clickItem">
 		<view class="left">
 			<view class="left-icon">
-				<u-icon :name="icon" :color="iconColor" size="32"></u-icon>
+				<u-icon :name="icon" :color="iconColor"></u-icon>
 			</view>
 			<text>{{ title }}</text>
 		</view>
 		<view class="right">
 			<text class="right-text">{{ itemDes }}</text>
 			<view class="right-icon">
-				<u-icon name="arrow-right" color="#b4b4b4" size="32"></u-icon>
+				<u-icon name="arrow-right" color="#b4b4b4"></u-icon>
 			</view>
 			
 		</view>
@@ -57,19 +57,18 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 25rpx;
+		padding: 30rpx 25rpx;
+		font-size: 32rpx;
+		border-bottom: 1px solid $global-general;
 		.left {
 			display: flex;
-			
 			.left-icon {
-				padding-right: 15rpx;
+				margin-right: 20rpx;
 			}
 		}
 		.right {
 			display: flex;
-		
 			.right-text {
-				font-size: 24rpx;
 				color: #b1b1b1;
 			}
 			.right-icon {

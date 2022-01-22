@@ -1,6 +1,6 @@
 <template>
 	<view class="group-item" v-if="item" @click="click">
-		<u-avatar :size="100" class="item-avatar" :src="item.targetGroupInfo.avatar" mode="square"></u-avatar>
+		<u-avatar :size="100" class="item-avatar" :src="item.targetGroupInfo.avatar" mode="circle"></u-avatar>
 		<!-- 此层wrap在此为必写的，否则可能会出现标题定位错误 -->
 		<view class="title-wrap">
 			<view class="item-top">

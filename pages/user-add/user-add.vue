@@ -7,7 +7,7 @@
 			<view class="user-list">
 				<view class="user-item" v-for="(item,index) in userList" :key="index" @click="goDetail(item)">
 					<u-avatar :size="100" class="item-avatar" 
-					:src="item.avatar" mode="square"></u-avatar>
+					:src="item.avatar" mode="circle"></u-avatar>
 					<view class="content">
 						<view class="show-name">
 							{{`${item.showName}(${item.userName})`}}
