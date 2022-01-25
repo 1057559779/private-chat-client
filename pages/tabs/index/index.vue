@@ -6,8 +6,8 @@
 		<scroll-view :scroll-y="true" @scrolltolower="reachBottom" class="index-box">
 			<view class="lately-list">
 					<view v-for="(item, index) in latelyList" :key="item.targetId" >
-						<UserItem @click="openChatRoom(item)" :item="item" v-if="item.type === 1"></UserItem>
-						<GroupItem @click="openChatRoom(item)" :item="item" v-if="item.type === 2"></GroupItem>
+						<UserItem @click.native="openChatRoom(item)" :item="item" v-if="item.type === 1"></UserItem>
+						<GroupItem @click.native="openChatRoom(item)" :item="item" v-if="item.type === 2"></GroupItem>
 					</view>
 			</view>
 		</scroll-view>
@@ -59,7 +59,6 @@
 			},
 			//打开聊天室
 			async openChatRoom(item) {
-				
 				let type = item.type
 				//类型1 点对点
 				if(type === 1) {

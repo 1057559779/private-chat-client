@@ -1,5 +1,5 @@
 <template>
-	<view class="group-item" v-if="item" @click="click">
+	<view class="group-item" v-if="item">
 		<u-avatar :size="100" class="item-avatar" :src="item.targetGroupInfo.avatar" mode="circle"></u-avatar>
 		<!-- 此层wrap在此为必写的，否则可能会出现标题定位错误 -->
 		<view class="title-wrap">
@@ -29,9 +29,7 @@
 			}
 		},
 		methods: {
-			click() {
-				this.$emit('click')
-			}
+			
 		}
 	}
 </script>
