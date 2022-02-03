@@ -133,19 +133,6 @@
 							white-space: nowrap;
 						}
 					}
-					.action {
-						text-align: center;
-						width: 120rpx;
-						.add-btn {
-							display: inline-block;
-							border: 1px solid #999999;
-							padding: 5rpx 15rpx;
-							border-radius: 5rpx;
-							&:active {
-								background-color: #dee2e2;
-							}
-						}
-					}
 				}
 			}
 		}

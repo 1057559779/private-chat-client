@@ -11,7 +11,7 @@
 					</view>
 					<view class="info-area">
 						<view class="nick-area">
-							<view class="nick-text">{{userDetail.showName}}{{userDetail.showName}}</view>
+							<view class="nick-text">{{userDetail.showName}}</view>
 							<view v-if="userDetail.sex" :class="userDetail.sex == 1?'man':'woman'">
 								<u-icon :name="userDetail.sex == 1?'man':'woman'"></u-icon>
 							</view>
@@ -277,7 +277,7 @@
 				background-color: $global-primary;
 				color: #ffffff;
 				&.disable {
-					background-color: lighten($global-primary, 40%);
+					background-color: lighten($global-primary, 70%);
 				}
 			}
 			.click-active {

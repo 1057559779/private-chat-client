@@ -102,6 +102,19 @@
             }
             
         }
+        ,{
+            "path" : "pages/user-relation-request/user-relation-request",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"app-plus":{
+					"titleNView": false,
+					"bounce":"none"
+				}
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

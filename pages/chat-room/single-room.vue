@@ -346,7 +346,7 @@
 				border-bottom-right-radius: 32rpx;
 				transition: background-color .2s;
 				&.disable {
-					background-color: lighten($global-primary, 40%);
+					background-color: lighten($global-primary, 70%);
 				}
 			}
 		}
