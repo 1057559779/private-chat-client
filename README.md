@@ -26,13 +26,13 @@ manifest.json 文件里拉到最后面，更改h5->devServer->proxy->/api->targe
 
 #### 效果截图
 
-![输入图片说明](intro/%E7%99%BB%E5%BD%95%E9%A1%B5.PNG)
+![输入图片说明](intro/login.PNG)
 
-![输入图片说明](intro/%E6%9C%80%E8%BF%91%E8%81%94%E7%B3%BB%E4%BA%BA.PNG)
+![输入图片说明](intro/recent.PNG)
 
-![输入图片说明](intro/%E8%81%8A%E5%A4%A9%E5%AE%A4.PNG)
+![输入图片说明](intro/chat-room.PNG)
 
-![输入图片说明](intro/%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF%E9%A1%B5.PNG)
+![输入图片说明](intro/user-info.PNG)
 
 #### 后续开发目标
 
