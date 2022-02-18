@@ -2,17 +2,23 @@
 
 #### 介绍
 
-想要运行项目，建议先了解uniapp运行编译流程。
+intro目录下有一个apk包，可以下载下来直接放到安卓机里安装使用。
+
+如果想要通过源码来运行项目，建议先了解uniapp运行编译流程。
 
 这是个仿qq的聊天软件,前端技术使用的是uniapp，安卓端与ios端样式都做了兼容。后端代码请跳转到另一个[代码仓库（https://gitee.com/private-chat/private-chat-server）](https://gitee.com/private-chat/private-chat-server)
 
 目前该项目已经完成了点对点的实时聊天以及实时的好友添加
 
+
+
 #### 项目依赖安装
 
-下载编译器hbuilderx 
+1. 下载编译器hbuilderx 
 
-在hbilderx里安装sass插件
+2. 在hbilderx里安装sass插件
+
+3. npm 安装依赖  package.json 文件中就只有一个依赖：crypto-js 。该依赖是用来加密用的，但是目前前端登录用的还是明文传输。
 
 #### 项目配置
 
