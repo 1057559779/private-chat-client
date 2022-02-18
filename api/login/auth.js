@@ -13,7 +13,7 @@ export default {
 	 * 获得用户信息
 	 */
 	async getUserInfo() {
-		let url = '/res/user/getUserInfo'
+		let url = '/res/user/get_userinfo'
 		return await http.get(url)
 	},
 	

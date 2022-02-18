@@ -5,9 +5,17 @@
 		<view class="custom-tabbar-box">
 			<view class="custom-tabbar-fixed">
 				<view class="tabbar-list">
-					<view class="tabbar-item" v-for="(item,index) in tabList" :key="index" @click="runPage(index)">
-						<image v-if="current === index" class="image-area" :src="item.selectedIconPath"></image>
-						<image v-else class="image-area" :src="item.iconPath"></image>
+					<view class="tabbar-item" v-for="(item,index) in getTabbarList" :key="index" @click="runPage(index)">
+						
+						<view class="image-box">
+							<!-- 未阅读数量 -->
+							<view class="hint-count" v-if="item.count && item.count > 0">
+								{{item.count>99?"99+":item.count}}
+							</view>
+							<image v-if="current === index" class="image-area" :src="item.selectedIconPath"></image>
+							<image v-else class="image-area" :src="item.iconPath"></image>
+						</view>
+					
 						<view class="title">
 							{{ item.title }}
 						</view>
@@ -20,8 +28,7 @@
 </template>
 
 <script>
-	import tabbarList from "@/config/base/tabbar-list.js"
-	
+	import {mapGetters} from "vuex";
 	export default {
 		props: {
 			current: {
@@ -29,10 +36,10 @@
 				default: 0
 			}
 		},
-		data() {
-			return {
-				tabList: tabbarList,
-			}
+		computed: {
+			...mapGetters({
+				getTabbarList: "support/getTabbarList"
+			})
 		},
 		methods: {
 			runPage(index) {
@@ -49,8 +56,8 @@
 		height: calc(100rpx + constant(safe-area-inset-bottom));
 		height: calc(100rpx + env(safe-area-inset-bottom));	
 		.custom-tabbar-fixed {
-			box-shadow:4px 4px 8px #60baff;
-			background-color: #ffffff;
+			//box-shadow:4px 4px 8px #999999;
+			background-color: $global-general;
 			width: 100%;
 			position: fixed;
 			bottom: 0;
@@ -65,11 +72,24 @@
 				display: flex;
 				justify-content: space-between;
 				.tabbar-item {
+				
+					padding-top: 18rpx;
 					display: flex;
 					flex: 1;
 					flex-direction: column;
 					align-items: center;
 					justify-content: center;
+					
+					.image-box {
+						position: relative;
+						.hint-count {
+							position: absolute;
+							top: 0;
+							right: 0;
+							transform: translate(100%,-50%);
+							@include no-read-css;
+						}
+					}
 					.image-area {
 						width: 44rpx;
 						height: 44rpx;

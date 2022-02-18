@@ -5,7 +5,8 @@
 			<!-- 用户信息 -->
 			<view class="user-info-box">
 				<view class="user-info">
-					<view class="avatar"></view>
+					<u-avatar :size="150" class="avatar"
+					:src="userInfo.avatar?userInfo.avatar:''" mode="circle"></u-avatar>
 					<view class="nick">
 						{{userInfo.showName}}
 					</view>
@@ -30,7 +31,7 @@
 					</MyCenterListItem>
 											  
 					<MyCenterListItem title="登出" 
-						@click="logOut()"  icon="close" iconColor="#b4b4b4">
+						@click="logOut" icon="close-circle" iconColor="#f56c6c">
 					</MyCenterListItem>
 				</MyCenterList>
 			</view>
@@ -70,17 +71,17 @@
 			      commit("user/REMOVE_TOKEN")
 			    },
 			}),
-			logOut(){
-				//调用远程接口，删除token 如果在登出前token已经失效也会触发http拦截器中的401退出
-				authApi.logout(()=>{
-					// 删除一些用户标识
-					this.removeUserInfo()
-					this.removeToken()
-					//退出当时候顺便关闭webscoket
-					wsClient.close()
-					uni.reLaunch({
-						url: "/pages/login/login"
-					})
+			async logOut(){
+				//退出先关闭webscoket 因为sessionMap清空用户id需要从token中获取
+				wsClient.close()
+				// 调用远程接口，删除token 如果在登出前token已经失效也会触发http拦截器中的401退出
+				await authApi.logout()
+				// 删除一些用户标识
+				this.removeUserInfo()
+				this.removeToken()
+				
+				uni.reLaunch({
+					url: "/pages/login/login"
 				})
 			},
 			goPages(url) {
@@ -88,7 +89,7 @@
 				    url: url,
 				})
 			},	
-		}
+		},
 	}
 </script>
 
@@ -99,18 +100,16 @@
 			
 			padding-top: 200rpx;
 			.user-info-box {
-				padding: 0 35rpx;
+				// padding: 0 35rpx;
 				.user-info {
+					text-align: center;
 					border-radius: 15rpx;
-					background-color: #ffffff;
-					box-shadow:0px 1px 5px #ebeef8;
-					height: 240rpx;
+					background-color: $global-general;
 					margin-bottom: 35rpx;
+					padding-bottom: 25rpx;
 					.avatar {
-						width: 120rpx;
-						height: 120rpx;
-						border-radius: 100%;
-						background-color: #ebeef8;
+						width: 150rpx;
+						height: 150rpx;
 						transform: translateY(-60rpx);
 						margin: 0 auto;
 					}
@@ -125,36 +124,11 @@
 				}
 			}
 			.action-list-box {
-				padding: 0 35rpx;
+				// padding: 0 35rpx;
 				.action-list {
 					border-radius: 15rpx;
 					background-color: #ffffff;
-					box-shadow:0px 1px 5px #ebeef8;
 					margin-bottom: 35rpx;
-					.action-item {
-						display: flex;
-						align-items: center;
-						justify-content: space-between;
-						padding: 25rpx;
-						.left {
-							display: flex;
-							
-							.left-icon {
-								padding-right: 15rpx;
-							}
-						}
-						.right {
-							display: flex;
-						
-							.right-text {
-								font-size: 24rpx;
-								color: #b1b1b1;
-							}
-							.right-icon {
-								padding-left: 15rpx;
-							}
-						}
-					}
 				}
 			}
 		}

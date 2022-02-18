@@ -7,9 +7,11 @@ import store from "@/store/index.js"
 const wsClient = {
 	
 	//开启连接	
-	open() {		
+	open(callback) {		
 		let token = store.getters['user/getToken']
 		if(token) {
+			console.log("正在连接")
+			ToastUtil.showLoading("正在连接")
 			//存在token才让他连接
 			uni.connectSocket({
 			    url: `${configInfo.wsUrl}/${token}`,
@@ -18,14 +20,12 @@ const wsClient = {
 					wsClient.onError()
 					//调用关闭监听事件
 					wsClient.onClose()
+					
+					//当连接创建时，加载一些数据
+					callback()
 			    }
 			});
 		}else {
-			let userInfo = store.getters['user/getUserInfo']
-			//如果存在用户信息，则清除用户信息
-			if(userInfo) {
-				store.commit("user/REMOVE_USER_INFO")
-			}
 			//退出到登录页面
 			uni.reLaunch({
 				url: "/pages/login/login"
@@ -57,11 +57,13 @@ const wsClient = {
 	},
 	onOpen() {
 		uni.onSocketOpen(function (res) {
+		  ToastUtil.hideLoading()
 		  ToastUtil.show("连接成功")
 		});
 	},
 	onError() {
 		uni.onSocketError(function (res) {
+			ToastUtil.hideLoading()
 			ToastUtil.show("WebSocket连接打开失败，请检查！")
 		});
 	}

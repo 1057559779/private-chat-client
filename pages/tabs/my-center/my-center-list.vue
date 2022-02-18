@@ -18,7 +18,7 @@
 	.my-cener-list {
 		border-radius: 15rpx;
 		background-color: #ffffff;
-		box-shadow:0px 1px 5px #ebeef8;
 		margin-bottom: 35rpx;
+		border-top: 1px solid $global-general;
 	}
 </style>

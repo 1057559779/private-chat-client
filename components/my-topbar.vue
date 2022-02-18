@@ -35,7 +35,7 @@
 <style scoped lang="scss">
 	.my-topbar {
 		.my-topbar-content {
-			background-color: #ffffff;
+			background-color: $global-general;
 			width: 100%;
 			position: fixed;
 			// z-index 不可以太高，容易遮挡住 loading

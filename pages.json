@@ -13,9 +13,7 @@
 					"titleNView": false,
 					"bounce":"none"
 				}
-				
 			}
-			
 		},
 		{
             "path" : "pages/login/login",
@@ -56,6 +54,64 @@
             {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/chat-room/single-room",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"app-plus":{
+					"titleNView": false
+				}
+            }  
+        }
+        ,{
+            "path" : "pages/chat-room/group-room",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/user-add/user-add",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"app-plus":{
+					"titleNView": false
+				}
+            }
+            
+        }
+        ,{
+            "path" : "pages/user-detail/user-detail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"app-plus":{
+					"titleNView": false,
+					"bounce":"none"
+				}
+            }
+            
+        }
+        ,{
+            "path" : "pages/user-relation-request/user-relation-request",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"app-plus":{
+					"titleNView": false,
+					"bounce":"none"
+				}
             }
             
         }

@@ -3,14 +3,27 @@
 	<view>
 		<MyTopBar>
 			<view class="index-topbar">
-				<view class="avatar"></view>
+				<u-avatar :size="55" class="avatar"
+				 :src="userInfo.avatar"></u-avatar>
 				
 				<view class="center">
-					首页
+					{{userInfo.showName}}
 				</view>
 				<view class="right">
-					<!-- 空标签占位 -->
-					<view class="just-empty"></view>
+					<MyDropDown>
+						<template #title>
+							<u-icon name="plus"></u-icon>
+						</template>
+						<template #list>
+							<view class="choise-box">
+								<view class="choise-drop-down-item" @click="runToUserAddPage">
+									加好友
+								</view>
+								<view class="choise-drop-down-item">暂未开发</view>
+								<view class="choise-drop-down-item">暂未开发</view>
+							</view>
+						</template>
+					</MyDropDown>
 				</view>
 			</view>
 		</MyTopBar>
@@ -18,22 +31,30 @@
 </template>
 
 <script>
-	import MySearch from "@/components/my-search.vue"
-	import MyTopBar from "@/components/my-topbar.vue"
+	import MyDropDown from "@/components/my-drop-down.vue"
+	import MyTopBar from "@/components/my-topbar.vue";
+	import {mapGetters} from "vuex";
+	
 	export default {
 		components: {
 			MyTopBar,
-			MySearch
+			MyDropDown
 		},
 		data() {
 			return {
 				
 			}
 		},
+		computed: {
+			...mapGetters({
+				userInfo: "user/getUserInfo"
+			})	
+		},
 		methods: {
-			runSearchPage() {
+			//跳转到用户添加页
+			runToUserAddPage() {
 				uni.navigateTo({
-					url: "/pages/search-page/search-page"
+					url: "/pages/user-add/user-add"
 				})
 			}
 		}
@@ -48,24 +69,25 @@
 		align-items: center;
 		padding: 0 35rpx;
 		height: 100%;
-		background-color: #ffffff;
-		vertical-align: middle;
 		.right {
-			.just-empty {
-				width: 55rpx;
-				height: 55rpx;
-			}
+			font-size: 48rpx;
+			color: $global-primary;
 		}
 		.center {
-			flex: 1;
-			padding: 0 20rpx;
+			//flex: 1;
+			//padding: 0 20rpx;
 			text-align: center;
+			font-size: 32rpx;
 		}
-		.avatar {
-			width: 55rpx;
-			height: 55rpx;
-			border-radius: 100%;
-			background-color: #60baff;
+		.choise-box {
+			background-color: #ffffff;
+			border-radius: 20rpx;
+			.choise-drop-down-item {
+				color: #000000;
+				padding: 24rpx 0;
+				text-align: center;
+				font-size: 28rpx;
+			}
 		}
 	}
 </style>
