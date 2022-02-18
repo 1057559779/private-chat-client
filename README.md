@@ -34,6 +34,7 @@ manifest.json 文件里拉到最后面，更改h5->devServer->proxy->/api->targe
 
 ![输入图片说明](intro/user-info.PNG)
 
+
 #### 后续开发目标
 
 1. 注册/用户信息编辑功能
