@@ -61,7 +61,7 @@
 			async updateVersion() {
 					const versionInfo = await versionApi.getLatestVersion()
 					//若最新版本不大于当前版本，则不执行
-					if(parseInt(versionInfo.versionCode) < parseInt(this.nowVersion.versionCode) ) {
+					if(parseInt(versionInfo.versionCode) <= parseInt(this.nowVersion.versionCode) ) {
 						uni.showToast({
 							title: "当前版本已经是最新版本",
 							position: 'bottom',
