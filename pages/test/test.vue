@@ -12,25 +12,22 @@
 			}
 		},
 		methods: {
-			sendMsg() {
-				//wsClient.send("firechildren")
-			}
-		},
-		onLoad() {
 			
-		}
+		},
 	}
 </script>
 
 <style scope lang="scss">
 	.date-choice {
 		display: flex;
+
 		.date-pathway {
-			
+
 			flex: 1;
 			overflow: auto;
 			white-space: nowrap;
 			background-color: #ffffff;
+
 			.pathway-item {
 				display: flex;
 				justify-content: center;
@@ -39,9 +36,10 @@
 				width: 150rpx;
 				height: 100%;
 				display: inline-flex;
-				
+
 			}
 		}
+
 		.date-btn {
 			margin-left: 10rpx;
 			width: 150rpx;
