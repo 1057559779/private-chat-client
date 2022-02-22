@@ -43,6 +43,15 @@ manifest.json 文件里拉到最后面，更改h5->devServer->proxy->/api->targe
 ![输入图片说明](intro/user-info.PNG)
 
 
+#### 热更新维护操作
+
+1. 修改mainifest.json文件中 App的应用版本名称（x.x.x）与应用版本号（xxx）。x代表int类型
+2. 版本修改完毕之后，点击发行-> 原生App-制作应用wgt包
+3. 将打包出的wgt后缀文件通过 接口 http://ip:port/test/upload 将文件上传上去 请求方法post form-data方式，参数名file
+4. sys_version表中新建一条数据，数据version填App的应用版本名称；versionCode填应用版本号，wgtUrl填刚才文件上传后得到的文件url
+5. 用户进入应用后，我的->设置下方有一个当前版本:x.x.x的按钮，点击即可热更新
+
+
 #### 后续开发目标
 
 1. 注册/用户信息编辑功能
