@@ -13,8 +13,9 @@
 		<view class="chat-box" :class="{'safe':!height}" :style="{'height': elasticHeight}">
 			<!-- :scroll-into-view="scrollIntoView" -->
 			<scroll-view 
-				:scroll-with-animation="true" 
+				:scroll-with-animation="isAnimation" 
 				:scroll-y="true" 
+				:scroll-into-view="scrollIntoView"
 				@scrolltoupper="upLoadMessage" 
 				:scroll-top="scrollTop"
 				@scroll="scroll"
@@ -23,7 +24,7 @@
 				<view id="messageList" class="message-list">
 					<view class="message-loading" v-if="messageLoading">加载...</view>
 					<view class="message-item" :class="{'left':item.senderId !== userInfo.id }"
-						v-for="(item,index) in messageList" :key="index">
+						v-for="(item,index) in messageList" :key="item.id" :id="`msg`+item.id">
 						<view class="avatar">
 							<u-avatar :size="55" class="avatar"
 								:src="item.senderId !== userInfo.id?targetInfo.avatar:userInfo.avatar"></u-avatar>
@@ -68,6 +69,7 @@
 			return {
 				targetInfo: {}, //聊天室目标对象
 				height: 0,
+				isAnimation: true,
 				scrollTop: 0,
 				old: {
 					scrollTop: 0
@@ -83,11 +85,14 @@
 				},
 				page: {
 					current: 1,
-					size: 20
+					size: 25
 				},
 				messageLoading: false,
 				messageList: [],
 				isBottom: false,
+				timeFlag: null,
+				isEmpty: false,
+				scrollIntoView: "", //锚点
 			}
 		},
 		computed: {
@@ -199,7 +204,7 @@
 					let param = {
 						targetId: this.targetInfo.id,
 						current: this.page.current,
-						size: 15
+						size: this.page.size
 					}
 					const res = await messageApi.getSingleMessage(param)
 					
@@ -207,11 +212,44 @@
 					
 					this.messageLoading = false
 					
+					if(res.length == 0 ){
+						this.isEmpty = true
+					}
+					
 			
 			},
-			async upLoadMessage() {
-				this.page.current += 1
-				await this.getMessageList()
+			upLoadMessage() {
+				//回弹，让滚动条视图永远到达不了顶部
+				this.old.scrollTop += 1
+				//判空能防止回弹时候重复调用
+				if(this.isEmpty == true) {
+					return;
+				}
+				//因为ios 页面在顶部插入的时候会把原位置顶下来，所以还是需要用到锚点定位的
+				this.$nextTick(() => {
+					//获取加载之前的，最新的那个消息
+					let topId = "msg"+this.messageList[0].id
+					//滚动动画关闭
+					this.isAnimation = false
+					this.scrollTop = this.old.scrollTop
+					this.messageLoading = true
+					if(this.timeFlag) {
+						clearTimeout(this.timeFlag)
+					}
+					//稍微延时一下，让历史记录加载不那么快
+					this.timeFlag = setTimeout(async ()=>{
+						this.page.current += 1
+						await this.getMessageList()
+						
+						this.$nextTick(()=>{
+							this.scrollIntoView = topId
+							this.$nextTick(()=>{
+								this.isAnimation = true
+							})
+						})
+					},1500)
+					
+				})
 			},
 			//参数初始化
 			dataClear() {
@@ -284,14 +322,12 @@
 		}
 
 		.message-box {
-			position: relative;
 			min-height: 0;
 			background-color: $global-general;
 			flex: 1;
 
 			.message-list {
 				padding: 20rpx;
-
 				.message-loading {
 					text-align: center;
 					color: #999999;
