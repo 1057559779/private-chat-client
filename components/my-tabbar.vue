@@ -72,13 +72,11 @@
 				display: flex;
 				justify-content: space-between;
 				.tabbar-item {
-				
-					padding-top: 18rpx;
+					padding-top: 10rpx;
 					display: flex;
 					flex: 1;
 					flex-direction: column;
 					align-items: center;
-					justify-content: center;
 					
 					.image-box {
 						position: relative;
@@ -91,11 +89,11 @@
 						}
 					}
 					.image-area {
-						width: 44rpx;
-						height: 44rpx;
+						font-size: 0;
+						width: 40rpx;
+						height: 40rpx;
 					}
 					.title {
-						padding-top: 5rpx;
 						font-size: 22rpx;
 					}
 				}

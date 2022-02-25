@@ -4,7 +4,7 @@
 		<view class="login-content">
 			
 			<view class="page-title">
-				<view class="title">Qiu的聊天</view>
+				<view class="title">Private-Chat</view>
 			</view>
 			<view class="input-area">
 				<view class="form-item">
@@ -130,7 +130,6 @@
 					border-radius: 50rpx;
 					padding: 30rpx 0;
 					text-align: center;
-					//border-bottom: 1px solid $global-minor;
 					margin-bottom: 20rpx;
 					.login-input {
 						color: $global-primary;
@@ -148,7 +147,11 @@
 						height: 130rpx;
 						font-weight: bold;
 						background-color: $global-primary;
+						transition: background-color .2s;
 						border-radius: 50%;
+						&:active {
+							background-color: lighten($global-primary, 70%);
+						}
 					}
 				}
 			}
