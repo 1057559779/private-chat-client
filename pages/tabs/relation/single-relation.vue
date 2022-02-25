@@ -66,7 +66,7 @@
 		height: 100%;
 		.new-request {
 			padding: 20rpx 0;
-			background-color: #edf2f1;
+			background-color: #F7F7F7;
 			.request-item {
 				padding: 25rpx;
 				background-color: #ffffff;
@@ -84,6 +84,7 @@
 			.relation-item {
 				display: flex;
 				padding: 20rpx;
+				border-bottom: 1px solid #F7F7F7;
 				&:active {
 					background-color: #dee2e2;
 				}

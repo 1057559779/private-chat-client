@@ -8,9 +8,9 @@
 				<view class="search">
 					<MySearch :value="value" 
 						@input="handleInput"
-						@search="handleSearch" placeholder="搜索功能与通知">
+						@search="handleSearch" placeholder="输入账户或者昵称">
 						<view class="search-icon">
-							<u-icon name="search" color="#60baff" :size="30"></u-icon>
+							<u-icon name="search" color="#9C94FF" :size="30"></u-icon>
 						</view>
 					</MySearch>
 				</view>

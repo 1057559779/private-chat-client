@@ -26,7 +26,7 @@
 					<view class="message-item" :class="{'left':item.senderId !== userInfo.id }"
 						v-for="(item,index) in messageList" :key="item.id" :id="`msg`+item.id">
 						<view class="avatar">
-							<u-avatar :size="55" class="avatar"
+							<u-avatar :size="65" class="avatar"
 								:src="item.senderId !== userInfo.id?targetInfo.avatar:userInfo.avatar"></u-avatar>
 						</view>
 						<view class="message" :class="{'left':item.senderId !== userInfo.id }">
@@ -335,7 +335,7 @@
 
 				.message-item {
 					display: flex;
-					align-items: center;
+					//align-items: center;
 					flex-direction: row-reverse;
 					margin-bottom: 25rpx;
 
@@ -344,12 +344,12 @@
 					}
 
 					.avatar {
-						width: 55rpx;
-						height: 55rpx;
+						width: 65rpx;
+						height: 65rpx;
 					}
 
 					.message {
-						padding-left: 55rpx;
+						padding-left: 65rpx;
 
 						&.left {
 							padding-left: 0;
@@ -357,6 +357,7 @@
 						}
 
 						.content {
+							font-size: 32rpx;
 							background-color: #ffffff;
 							background-color: $global-primary;
 							color: #ffffff;

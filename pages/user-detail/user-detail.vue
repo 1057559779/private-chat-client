@@ -246,12 +246,13 @@
 							overflow: hidden;
 							white-space: nowrap;
 							max-width: 350rpx;
+							margin-right: 10rpx;
 						}
 						.woman {
-							color: #FF0080;
+							color: $sex-girl;
 						}
 						.man {
-							color: $global-primary;
+							color: $sex-boy;
 						}
 					}
 					.username-area {
@@ -269,7 +270,7 @@
 			}
 		}
 		.bottom-box {
-			padding: 0 10rpx;
+			padding: 10rpx;
 			.simple-btn {
 				border-radius: 14rpx;
 				padding: 15rpx 0;

@@ -219,10 +219,10 @@
 					border-radius: 4rpx;
 					color: #999999;
 					.woman {
-						color: #FF0080;
+						color: $sex-girl;
 					}
 					.man {
-						color: $global-primary;
+						color: $sex-boy;
 					}
 				}
 				.comment {

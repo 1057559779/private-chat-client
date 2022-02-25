@@ -91,7 +91,7 @@
 			// 选中项的主题颜色
 			activeColor: {
 				type: String,
-				default: '#2979ff'
+				default: '#29105D'
 			},
 			// 未选中项的颜色
 			inactiveColor: {

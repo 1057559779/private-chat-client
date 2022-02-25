@@ -38,6 +38,7 @@
 	.user-item {
 		display: flex;
 		padding: 20rpx;
+		border-bottom: 1px solid #F7F7F7;
 		&:active {
 			background-color: #dee2e2;
 		}
